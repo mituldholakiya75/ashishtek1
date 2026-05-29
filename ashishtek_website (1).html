@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashishtek – US IT Bench Sales & Staffing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --ink:#0A0E1A;
+  --ink2:#111827;
+  --white:#FFFFFF;
+  --p:#635BFF;
+  --p2:#7B73FF;
+  --p-light:#EEF0FF;
+  --cyan:#00D4FF;
+  --green:#00C896;
+  --orange:#FF6B35;
+  --pink:#FF3CAC;
+  --yellow:#FFD60A;
+  --card:#161B2E;
+  --card2:#1C2235;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.14);
+  --muted:rgba(255,255,255,0.5);
+  --body:rgba(255,255,255,0.72);
+  --radius:16px;
+  --radius-lg:24px;
+}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;font-size:16px;line-height:1.6}
+
+/* ─ SCROLLBAR ─ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0A0E1A}
+::-webkit-scrollbar-thumb{background:#635BFF;border-radius:3px}
+
+/* ─ NAV ─ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:68px;padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,14,26,0.8);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,#635BFF 0%,#00D4FF 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;color:white;font-family:'Syne',sans-serif;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 20px rgba(99,91,255,0.5);
+}
+.logo-mark::before{
+  content:'';position:absolute;
+  top:-50%;left:-50%;width:200%;height:200%;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.15) 50%,transparent 70%);
+  animation:shimmer 3s infinite;
+}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.logo-mark span{position:relative;z-index:1}
+.logo-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:white}
+.logo-name em{
+  font-style:normal;
+  background:linear-gradient(90deg,#635BFF,#00D4FF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:white}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:white;padding:9px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-ghost:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.25)}
+.btn-nav-cta{
+  background:linear-gradient(135deg,#635BFF,#7B73FF);
+  color:white;border:none;padding:10px 22px;border-radius:8px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:'Inter',sans-serif;
+  box-shadow:0 4px 15px rgba(99,91,255,0.35);
+}
+.btn-nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,91,255,0.5)}
+
+/* ─ HERO ─ */
+.hero{
+  min-height:100vh;padding:120px 5% 100px;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;
+}
+/* Gradient mesh background */
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 30%,rgba(99,91,255,0.22) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 20%,rgba(0,212,255,0.18) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 60% at 60% 80%,rgba(0,200,150,0.14) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 30% 70%,rgba(255,60,172,0.12) 0%,transparent 50%),
+    var(--ink);
+}
+/* Animated grid lines */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+/* Floating orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;animation:float 8s ease-in-out infinite}
+.orb1{width:350px;height:350px;background:rgba(99,91,255,0.15);top:-80px;right:5%;animation-delay:0s}
+.orb2{width:280px;height:280px;background:rgba(0,212,255,0.12);top:30%;right:20%;animation-delay:2s}
+.orb3{width:220px;height:220px;background:rgba(0,200,150,0.12);bottom:10%;left:10%;animation-delay:4s}
+.orb4{width:180px;height:180px;background:rgba(255,107,53,0.1);bottom:20%;right:10%;animation-delay:1s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+
+.hero-inner{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:center;
+  position:relative;z-index:1;width:100%;max-width:1280px;margin:0 auto;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(99,91,255,0.15);
+  border:1px solid rgba(99,91,255,0.3);
+  border-radius:50px;padding:6px 16px;
+  font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#A9A4FF;
+  margin-bottom:28px;
+}
+.hero-tag .pulse{width:7px;height:7px;border-radius:50%;background:#635BFF;box-shadow:0 0 8px #635BFF;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(42px,5.5vw,72px);
+  line-height:1.08;font-weight:800;
+  letter-spacing:-1.5px;margin-bottom:24px;
+}
+.grad-text{
+  background:linear-gradient(90deg,#FFFFFF 0%,#A9A4FF 40%,#00D4FF 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.grad-text-orange{
+  background:linear-gradient(90deg,#FF6B35,#FF3CAC);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-desc{font-size:18px;color:var(--body);line-height:1.8;max-width:520px;margin-bottom:40px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+.btn-primary{
+  background:linear-gradient(135deg,#635BFF 0%,#8B5CF6 100%);
+  color:white;border:none;padding:16px 32px;border-radius:12px;
+  font-size:16px;font-weight:700;cursor:pointer;
+  transition:all .25s;display:inline-flex;align-items:center;gap:10px;
+  font-family:'Inter',sans-serif;
+  box-shadow:0 8px 30px rgba(99,91,255,0.4);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(99,91,255,0.55)}
+.btn-secondary{
+  background:rgba(255,255,255,0.06);
+  color:white;border:1px solid rgba(255,255,255,0.15);padding:15px 30px;
+  border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;
+  transition:all .25s;display:inline-flex;align-items:center;gap:10px;
+  font-family:'Inter',sans-serif;backdrop-filter:blur(10px);
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:36px}
+.stat{border-left:2px solid rgba(255,255,255,0.1);padding-left:20px}
+.stat-n{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;line-height:1}
+.stat-n span{font-size:20px}
+.stat-l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-weight:500}
+
+/* Hero visual */
+.hero-visual{position:relative}
+.hero-card-main{
+  background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-lg);
+  padding:28px;
+  box-shadow:0 40px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.05);
+}
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;
+}
+.card-header-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.live-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(0,200,150,0.15);border:1px solid rgba(0,200,150,0.3);
+  border-radius:50px;padding:4px 12px;font-size:11px;font-weight:600;color:#00C896;
+}
+.live-badge .dot{width:6px;height:6px;border-radius:50%;background:#00C896;animation:blink 1.5s infinite}
+.service-row{
+  display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border-radius:12px;margin-bottom:8px;transition:background .2s;cursor:default;
+}
+.service-row:hover{background:rgba(255,255,255,0.04)}
+.svc-dot{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.svc-name{font-size:14px;font-weight:600;color:white}
+.svc-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.svc-check{
+  margin-left:auto;width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+}
+.check-green{background:rgba(0,200,150,0.15);color:#00C896}
+.check-blue{background:rgba(99,91,255,0.15);color:#A9A4FF}
+.check-cyan{background:rgba(0,212,255,0.15);color:#00D4FF}
+.check-orange{background:rgba(255,107,53,0.15);color:#FF6B35}
+.check-pink{background:rgba(255,60,172,0.15);color:#FF3CAC}
+
+.float-pill{
+  position:absolute;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:50px;padding:10px 16px;
+  display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:white;
+  box-shadow:0 12px 40px rgba(0,0,0,0.4);
+  white-space:nowrap;animation:floatPill 4s ease-in-out infinite;
+}
+.float-pill-1{top:-22px;right:-20px;animation-delay:0s}
+.float-pill-2{bottom:-20px;left:-24px;animation-delay:2s}
+@keyframes floatPill{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ─ LOGOS BAR ─ */
+.logos-bar{
+  padding:32px 5%;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:0;
+  overflow:hidden;position:relative;
+}
+.logos-bar::before,.logos-bar::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;
+}
+.logos-bar::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
+.logos-bar::after{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
+.logos-track{
+  display:flex;gap:56px;align-items:center;
+  animation:marquee 20s linear infinite;white-space:nowrap;
+}
+.logos-track:hover{animation-play-state:paused}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.logo-item{
+  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.28);white-space:nowrap;
+}
+.bar-label{
+  font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);margin-right:36px;white-space:nowrap;flex-shrink:0;
+}
+
+/* ─ SECTIONS ─ */
+.section{padding:110px 5%}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{
+  display:inline-block;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--p2);margin-bottom:16px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,52px);
+  font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:20px;
+}
+.section-desc{font-size:18px;color:var(--body);max-width:580px;line-height:1.8}
+
+/* ─ SERVICES ─ */
+.services{background:var(--ink)}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:var(--border);border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--border);
+}
+.svc-card{
+  background:var(--ink2);padding:40px 36px;
+  transition:background .3s;position:relative;overflow:hidden;
+}
+.svc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  opacity:0;transition:opacity .3s;
+}
+.svc-card:hover{background:#141828}
+.svc-card:hover::before{opacity:1}
+.svc-c1::before{background:linear-gradient(90deg,#635BFF,#00D4FF)}
+.svc-c2::before{background:linear-gradient(90deg,#00C896,#00D4FF)}
+.svc-c3::before{background:linear-gradient(90deg,#FF6B35,#FF3CAC)}
+.svc-c4::before{background:linear-gradient(90deg,#FFD60A,#FF6B35)}
+.svc-c5::before{background:linear-gradient(90deg,#FF3CAC,#635BFF)}
+.svc-c6::before{background:linear-gradient(90deg,#00D4FF,#00C896)}
+.svc-icon-box{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:24px;
+}
+.svc-title{font-size:18px;font-weight:700;margin-bottom:12px}
+.svc-desc{font-size:14px;color:var(--body);line-height:1.7;margin-bottom:20px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-size:11px;font-weight:600;letter-spacing:0.5px;
+  padding:4px 10px;border-radius:6px;border:1px solid;
+}
+
+/* ─ HOW IT WORKS ─ */
+.how{
+  background:linear-gradient(160deg,#0D1221 0%,#111827 100%);
+  position:relative;overflow:hidden;
+}
+.how::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%,rgba(99,91,255,0.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 60%,rgba(0,212,255,0.07) 0%,transparent 60%);
+}
+.how-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  position:relative;z-index:1;
+}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{
+  display:flex;gap:24px;padding:28px 0;
+  border-left:2px solid var(--border);padding-left:28px;
+  position:relative;transition:border-color .3s;
+}
+.step:hover{border-color:var(--p)}
+.step::before{
+  content:'';position:absolute;top:28px;left:-6px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--border2);border:2px solid var(--ink2);
+  transition:background .3s,box-shadow .3s;
+}
+.step:hover::before{background:var(--p);box-shadow:0 0 12px rgba(99,91,255,0.7)}
+.step-num{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;color:var(--p2);
+  margin-bottom:8px;
+}
+.step-title{font-size:17px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--body);line-height:1.7}
+
+.how-visual{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,0.4);
+}
+.visual-header{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.dot-red{width:12px;height:12px;border-radius:50%;background:#FF5F57}
+.dot-yellow{width:12px;height:12px;border-radius:50%;background:#FEBC2E}
+.dot-green{width:12px;height:12px;border-radius:50%;background:#28C840}
+.visual-content{padding:28px 24px}
+.metric-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);border-radius:10px;margin-bottom:10px;
+}
+.metric-label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.metric-val{font-size:14px;font-weight:700}
+.metric-bar-wrap{margin-top:20px}
+.metric-bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.metric-bar{height:8px;border-radius:4px;background:rgba(255,255,255,0.07);overflow:hidden;margin-bottom:12px}
+.metric-bar-fill{height:100%;border-radius:4px}
+
+/* ─ WHY US ─ */
+.why{background:var(--ink);position:relative;overflow:hidden}
+.why::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(99,91,255,0.07) 0%,transparent 70%);
+}
+.why-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+  position:relative;z-index:1;
+}
+.why-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px 28px;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.why-card::after{
+  content:'';position:absolute;
+  bottom:-60px;right:-60px;
+  width:120px;height:120px;border-radius:50%;
+  opacity:0;transition:opacity .4s,transform .4s;
+  transform:scale(0.5);
+}
+.why-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.why-card:hover::after{opacity:.12;transform:scale(1)}
+.wc1::after{background:#635BFF}
+.wc2::after{background:#00D4FF}
+.wc3::after{background:#00C896}
+.wc4::after{background:#FF3CAC}
+.why-icon{font-size:28px;margin-bottom:20px;display:block}
+.why-title{font-size:16px;font-weight:700;margin-bottom:10px}
+.why-desc{font-size:14px;color:var(--body);line-height:1.7}
+
+/* ─ TESTIMONIALS ─ */
+.testimonials{
+  background:linear-gradient(160deg,#0D1221 0%,#0F1320 100%);
+  position:relative;overflow:hidden;
+}
+.testimonials::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 40% 60% at 0% 50%,rgba(0,212,255,0.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 100% 50%,rgba(255,107,53,0.07) 0%,transparent 60%);
+}
+.testi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  position:relative;z-index:1;
+}
+.testi-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px 30px;position:relative;
+  transition:all .3s;
+}
+.testi-card:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.testi-card::before{
+  content:'\201C';font-size:72px;line-height:1;font-family:Georgia,serif;
+  position:absolute;top:12px;left:24px;color:rgba(99,91,255,0.15);
+}
+.stars{color:#FFD60A;font-size:15px;margin-bottom:16px;letter-spacing:2px}
+.testi-text{font-size:15px;color:var(--body);line-height:1.8;margin-bottom:28px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.author-av{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:white;flex-shrink:0;
+}
+.av1{background:linear-gradient(135deg,#635BFF,#00D4FF)}
+.av2{background:linear-gradient(135deg,#FF6B35,#FF3CAC)}
+.av3{background:linear-gradient(135deg,#00C896,#00D4FF)}
+.author-name{font-size:14px;font-weight:700}
+.author-title{font-size:12px;color:var(--muted)}
+
+/* ─ VISA STRIP ─ */
+.visa-strip{
+  background:linear-gradient(135deg,#635BFF 0%,#8B5CF6 40%,#00D4FF 100%);
+  padding:60px 5%;position:relative;overflow:hidden;
+}
+.visa-strip::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+}
+.visa-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:24px;position:relative;z-index:1;max-width:1200px;margin:0 auto;
+}
+.visa-left h3{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px;
+}
+.visa-left p{font-size:16px;color:rgba(255,255,255,0.8)}
+.visa-tags{display:flex;gap:10px;flex-wrap:wrap}
+.visa-tag{
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:50px;padding:8px 18px;
+  font-size:13px;font-weight:600;color:white;
+}
+
+/* ─ CTA ─ */
+.cta-section{
+  background:var(--ink);
+  padding:120px 5%;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 50%,rgba(99,91,255,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 70% 50%,rgba(0,212,255,0.12) 0%,transparent 60%);
+}
+.cta-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.cta-title{
+  font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,60px);
+  font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:24px;
+}
+.cta-desc{font-size:18px;color:var(--body);margin-bottom:40px;line-height:1.8}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ─ CONTACT STRIP ─ */
+.contact-strip{
+  background:var(--card);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:48px 5%;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;
+  max-width:100%;
+}
+.contact-item{display:flex;align-items:flex-start;gap:14px}
+.contact-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.contact-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px}
+.contact-value{font-size:14px;font-weight:600;color:white}
+
+/* ─ FOOTER ─ */
+footer{
+  background:#1a1f2e;
+  padding:70px 5% 0;
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,0.14) 1px,transparent 1px);
+  background-size:22px 22px;
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 500'%3E%3Cellipse cx='170' cy='160' rx='90' ry='80' fill='black'/%3E%3Cellipse cx='310' cy='130' rx='70' ry='65' fill='black'/%3E%3Cellipse cx='450' cy='145' rx='80' ry='70' fill='black'/%3E%3Cellipse cx='600' cy='130' rx='65' ry='60' fill='black'/%3E%3Cellipse cx='720' cy='150' rx='75' ry='65' fill='black'/%3E%3Cellipse cx='870' cy='145' rx='60' ry='55' fill='black'/%3E%3Cellipse cx='130' cy='280' rx='55' ry='50' fill='black'/%3E%3Cellipse cx='250' cy='300' rx='65' ry='55' fill='black'/%3E%3Cellipse cx='400' cy='290' rx='70' ry='60' fill='black'/%3E%3Cellipse cx='540' cy='280' rx='60' ry='55' fill='black'/%3E%3Cellipse cx='660' cy='285' rx='50' ry='45' fill='black'/%3E%3Cellipse cx='760' cy='275' rx='60' ry='50' fill='black'/%3E%3Cellipse cx='880' cy='280' rx='55' ry='48' fill='black'/%3E%3Cellipse cx='200' cy='390' rx='40' ry='35' fill='black'/%3E%3Cellipse cx='340' cy='400' rx='50' ry='40' fill='black'/%3E%3Cellipse cx='480' cy='395' rx='45' ry='38' fill='black'/%3E%3Cellipse cx='620' cy='390' rx='55' ry='45' fill='black'/%3E%3Cellipse cx='750' cy='385' rx='48' ry='40' fill='black'/%3E%3C/svg%3E");
+  mask-size:100% 100%;mask-repeat:no-repeat;
+  opacity:0.5;pointer-events:none;z-index:0;
+}
+footer>*{position:relative;z-index:1}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;
+}
+.footer-brand-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.8;margin-top:20px}
+.footer-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.35);margin-bottom:20px}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:10px}
+.footer-links a{text-decoration:none;color:rgba(255,255,255,0.55);font-size:14px;transition:color .2s}
+.footer-links a:hover{color:white}
+.everify-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:white;border-radius:8px;padding:8px 16px;margin-top:20px;
+}
+.flag-stripes{display:flex;flex-direction:column;gap:2px}
+.fs{height:4px;width:32px;border-radius:1px}
+.everify-wordmark{
+  font-family:Arial,sans-serif;font-size:20px;font-weight:900;letter-spacing:-0.5px;
+}
+.ev-blue{color:#1B3F8B}.ev-eq{color:#C0392B}.ev-verify{color:#1B3F8B;font-style:italic;font-size:22px}
+.footer-divider{border:none;border-top:1px solid rgba(255,255,255,0.08);margin-bottom:0}
+.footer-bottom{
+  padding:24px 0 0;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:13px;color:rgba(255,255,255,0.35);flex-wrap:wrap;gap:12px;
+}
+.footer-bottom-links{display:flex;gap:24px}
+.footer-bottom-links a{color:rgba(255,255,255,0.35);text-decoration:none}
+.footer-bottom-links a:hover{color:white}
+.footer-green-bar{
+  background:linear-gradient(90deg,#2BAD5C,#3BC86A);
+  margin:0 -5%;padding:22px 5%;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  margin-top:32px;
+}
+.fgb-copy{font-size:13px;color:rgba(255,255,255,0.85);font-weight:500}
+.call-block{display:flex;align-items:center;gap:14px}
+.headset-circle{
+  width:50px;height:50px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.call-sms-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:2px}
+.call-num{font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px}
+
+/* ─ MODALS ─ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(5,8,18,0.8);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.active{display:flex}
+.modal{
+  background:#111827;border:1px solid rgba(255,255,255,0.12);
+  border-radius:20px;padding:48px;max-width:520px;width:100%;
+  position:relative;
+  box-shadow:0 40px 80px rgba(0,0,0,0.6);
+  animation:mIn .3s ease;
+}
+@keyframes mIn{from{opacity:0;transform:translateY(16px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-close{
+  position:absolute;top:18px;right:18px;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,0.06);border:none;cursor:pointer;
+  font-size:16px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.modal-close:hover{background:rgba(255,255,255,0.1)}
+.modal-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:white;margin-bottom:6px}
+.modal-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.5);margin-bottom:8px}
+.form-input,.form-select{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;font-size:15px;color:white;
+  font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;
+}
+.form-input::placeholder{color:rgba(255,255,255,0.25)}
+.form-input:focus,.form-select:focus{border-color:rgba(99,91,255,0.6);background:rgba(99,91,255,0.05)}
+.form-select option{background:#111827;color:white}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-submit{
+  width:100%;padding:15px;margin-top:8px;
+  background:linear-gradient(135deg,#635BFF,#8B5CF6);
+  color:white;border:none;border-radius:10px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .2s;
+  box-shadow:0 6px 20px rgba(99,91,255,0.35);
+}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(99,91,255,0.5)}
+.form-success{display:none;text-align:center;padding:20px 0}
+.success-emoji{font-size:52px;margin-bottom:16px}
+.success-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;margin-bottom:10px}
+.success-sub{font-size:15px;color:var(--muted)}
+
+/* ─ FLOATING BTN ─ */
+.callback-float{position:fixed;bottom:28px;right:28px;z-index:90;display:flex;align-items:center;gap:12px}
+.float-tooltip{
+  background:#635BFF;color:white;font-size:13px;font-weight:600;
+  padding:10px 16px;border-radius:10px;white-space:nowrap;
+  box-shadow:0 8px 24px rgba(99,91,255,0.4);
+}
+.float-tooltip::after{
+  content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);
+  border:6px solid transparent;border-right:none;border-left-color:#635BFF;
+}
+.float-tooltip{position:relative}
+.callback-btn{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#635BFF,#8B5CF6);
+  border:none;cursor:pointer;font-size:24px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(99,91,255,0.5);
+  animation:floatBtn 3s ease-in-out infinite;transition:transform .2s,box-shadow .2s;
+}
+.callback-btn:hover{animation:none;transform:scale(1.1);box-shadow:0 12px 32px rgba(99,91,255,0.7)}
+@keyframes floatBtn{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ─ REVEAL ─ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ─ RESPONSIVE ─ */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .how-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links,.nav-right .btn-ghost{display:none}
+  .hero h1{font-size:42px}
+  .hero-stats{gap:20px}
+  .services-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .modal{padding:28px 20px}
+  .form-row{grid-template-columns:1fr}
+  .float-tooltip{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark"><span>A</span></div>
+    <span class="logo-name"><em>ashish</em>tek</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="openModal('callback')">📞 Callback</button>
+    <button class="btn-nav-cta" onclick="openModal('meeting')">Free Consultation →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag"><div class="pulse"></div>US IT Bench Sales Recruiter</div>
+      <h1>
+        <span class="grad-text">Your talent,</span><br>
+        aggressively<br>
+        <span class="grad-text-orange">marketed.</span>
+      </h1>
+      <p class="hero-desc">
+        Ashishtek handles every step — resume marketing, vendor submissions, recruiter outreach, LinkedIn optimization, and interview coaching — so you go from bench to billable, fast.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openModal('meeting')">📅 Schedule Free Meeting <span>→</span></button>
+        <button class="btn-secondary" onclick="openModal('callback')">📞 Request Callback</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-n" style="background:linear-gradient(90deg,#635BFF,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">500<span>+</span></div>
+          <div class="stat-l">Placements</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n" style="background:linear-gradient(90deg,#00C896,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">48<span>h</span></div>
+          <div class="stat-l">Avg. to Interview</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n" style="background:linear-gradient(90deg,#FF6B35,#FF3CAC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">96<span>%</span></div>
+          <div class="stat-l">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="float-pill float-pill-1">🚀 <span>Daily active marketing</span></div>
+      <div class="hero-card-main">
+        <div class="card-header">
+          <span class="card-header-title">Your Placement Pipeline</span>
+          <div class="live-badge"><div class="dot"></div>Live</div>
+        </div>
+        <div class="service-row">
+          <div class="svc-dot" style="background:rgba(99,91,255,0.15)">📄</div>
+          <div><div class="svc-name">Resume Marketing</div><div class="svc-sub">500+ vendor outreach daily</div></div>
+          <div class="svc-check check-green">✓</div>
+        </div>
+        <div class="service-row">
+          <div class="svc-dot" style="background:rgba(0,212,255,0.12)">📋</div>
+          <div><div class="svc-name">Job Applications</div><div class="svc-sub">Dice · LinkedIn · Indeed</div></div>
+          <div class="svc-check check-blue">✓</div>
+        </div>
+        <div class="service-row">
+          <div class="svc-dot" style="background:rgba(0,200,150,0.12)">📤</div>
+          <div><div class="svc-name">Vendor Submissions</div><div class="svc-sub">Tier-1 &amp; prime vendors</div></div>
+          <div class="svc-check check-cyan">✓</div>
+        </div>
+        <div class="service-row">
+          <div class="svc-dot" style="background:rgba(255,107,53,0.12)">💼</div>
+          <div><div class="svc-name">LinkedIn Optimization</div><div class="svc-sub">ATS-ready profile rewrite</div></div>
+          <div class="svc-check check-orange">✓</div>
+        </div>
+        <div class="service-row">
+          <div class="svc-dot" style="background:rgba(255,60,172,0.12)">🎯</div>
+          <div><div class="svc-name">Mock Interview Coaching</div><div class="svc-sub">Tech + HR rounds prep</div></div>
+          <div class="svc-check check-pink">✓</div>
+        </div>
+      </div>
+      <div class="float-pill float-pill-2">✅ <span>H1B · EAD · GC · USC</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS BAR -->
+<div class="logos-bar">
+  <div class="bar-label">Visa types we work with</div>
+  <div class="logos-track">
+    <span class="logo-item">H-1B Transfer</span>
+    <span class="logo-item">OPT / STEM OPT</span>
+    <span class="logo-item">H4 EAD</span>
+    <span class="logo-item">L2 EAD</span>
+    <span class="logo-item">Green Card</span>
+    <span class="logo-item">US Citizen</span>
+    <span class="logo-item">TN Visa</span>
+    <span class="logo-item">E-3 Visa</span>
+    <span class="logo-item">H-1B Transfer</span>
+    <span class="logo-item">OPT / STEM OPT</span>
+    <span class="logo-item">H4 EAD</span>
+    <span class="logo-item">L2 EAD</span>
+    <span class="logo-item">Green Card</span>
+    <span class="logo-item">US Citizen</span>
+    <span class="logo-item">TN Visa</span>
+    <span class="logo-item">E-3 Visa</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section services" id="services">
+  <div class="section-inner">
+    <div class="reveal" style="max-width:580px;margin-bottom:60px">
+      <div class="section-tag">What We Do</div>
+      <h2 class="section-title">
+        <span style="background:linear-gradient(90deg,white,#A9A4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Everything you need</span><br>
+        to get placed — fast.
+      </h2>
+      <p class="section-desc">From your first day on bench to your first day on contract, we handle every step of the placement process.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="svc-card svc-c1">
+        <div class="svc-icon-box" style="background:rgba(99,91,255,0.15)">📄</div>
+        <div class="svc-title">Resume Marketing</div>
+        <p class="svc-desc">We craft and blast your resume to 500+ vendors, primes, and direct clients across the US IT market — every single day.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#A9A4FF;border-color:rgba(99,91,255,0.3);background:rgba(99,91,255,0.1)">Daily Outreach</span>
+          <span class="tag" style="color:#A9A4FF;border-color:rgba(99,91,255,0.3);background:rgba(99,91,255,0.1)">500+ Vendors</span>
+        </div>
+      </div>
+      <div class="svc-card svc-c2">
+        <div class="svc-icon-box" style="background:rgba(0,212,255,0.12)">📋</div>
+        <div class="svc-title">Job Applications</div>
+        <p class="svc-desc">Mass applications on your behalf to Dice, LinkedIn, Indeed, and niche boards — we find every open requirement that fits you.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#00D4FF;border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.08)">Dice · LinkedIn</span>
+          <span class="tag" style="color:#00D4FF;border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.08)">Indeed</span>
+        </div>
+      </div>
+      <div class="svc-card svc-c3">
+        <div class="svc-icon-box" style="background:rgba(255,107,53,0.12)">📤</div>
+        <div class="svc-title">Vendor Submissions</div>
+        <p class="svc-desc">Direct submissions to tier-1 and prime vendors for active requirements matching your stack, location preference, and rate expectations.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#FF6B35;border-color:rgba(255,107,53,0.3);background:rgba(255,107,53,0.1)">Prime Vendors</span>
+          <span class="tag" style="color:#FF6B35;border-color:rgba(255,107,53,0.3);background:rgba(255,107,53,0.1)">Rate Negotiation</span>
+        </div>
+      </div>
+      <div class="svc-card svc-c4">
+        <div class="svc-icon-box" style="background:rgba(255,214,10,0.12)">📣</div>
+        <div class="svc-title">Recruiter Reach</div>
+        <p class="svc-desc">We proactively reach out to independent recruiters and staffing agencies with your profile — expanding beyond what's posted.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#FFD60A;border-color:rgba(255,214,10,0.3);background:rgba(255,214,10,0.1)">Agencies</span>
+          <span class="tag" style="color:#FFD60A;border-color:rgba(255,214,10,0.3);background:rgba(255,214,10,0.1)">Cold Outreach</span>
+        </div>
+      </div>
+      <div class="svc-card svc-c5">
+        <div class="svc-icon-box" style="background:rgba(255,60,172,0.12)">💼</div>
+        <div class="svc-title">LinkedIn Optimization</div>
+        <p class="svc-desc">We rewrite your profile with power keywords, a magnetic headline, and ATS-ready content that pulls recruiters to you inbound.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#FF3CAC;border-color:rgba(255,60,172,0.3);background:rgba(255,60,172,0.1)">SEO Keywords</span>
+          <span class="tag" style="color:#FF3CAC;border-color:rgba(255,60,172,0.3);background:rgba(255,60,172,0.1)">ATS-Ready</span>
+        </div>
+      </div>
+      <div class="svc-card svc-c6">
+        <div class="svc-icon-box" style="background:rgba(0,200,150,0.12)">🎯</div>
+        <div class="svc-title">Interview Scheduling & Mock Training</div>
+        <p class="svc-desc">We coordinate all interviews and run targeted mock sessions — technical, HR, and client-specific — until you're confident and ready.</p>
+        <div class="svc-tags">
+          <span class="tag" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1)">Mock Interviews</span>
+          <span class="tag" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1)">Tech + HR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="how">
+  <div class="section-inner">
+    <div class="how-grid">
+      <div class="reveal">
+        <div class="section-tag">The Process</div>
+        <h2 class="section-title">From bench to<br><span style="background:linear-gradient(90deg,#635BFF,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">billable in days.</span></h2>
+        <p class="section-desc" style="margin-bottom:48px">A transparent, proven workflow built to get you placed at premium rates as quickly as possible.</p>
+        <div class="steps">
+          <div class="step">
+            <div>
+              <div class="step-num">Step 01</div>
+              <div class="step-title">Free Consultation</div>
+              <p class="step-desc">We deep-dive into your skills, visa status, target locations, rate, and career goals to build your positioning strategy.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <div class="step-num">Step 02</div>
+              <div class="step-title">Profile & Resume Build</div>
+              <p class="step-desc">We craft a recruiter-magnet resume and LinkedIn profile optimized for ATS and keyword visibility.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <div class="step-num">Step 03</div>
+              <div class="step-title">Aggressive Marketing</div>
+              <p class="step-desc">Daily submissions to 500+ vendors, job applications, and direct recruiter outreach — you get a daily status report.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <div class="step-num">Step 04</div>
+              <div class="step-title">Interview Prep & Placement</div>
+              <p class="step-desc">We schedule interviews, run mock sessions, negotiate your rate, and support you through start date.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-visual reveal">
+        <div class="visual-header">
+          <div class="dot-red"></div>
+          <div class="dot-yellow"></div>
+          <div class="dot-green"></div>
+          <span style="margin-left:12px;font-size:13px;color:rgba(255,255,255,0.4);font-weight:500">Placement Dashboard</span>
+        </div>
+        <div class="visual-content">
+          <div class="metric-row">
+            <span class="metric-label">📄 Submissions this week</span>
+            <span class="metric-val" style="color:#A9A4FF">48</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">📞 Recruiter responses</span>
+            <span class="metric-val" style="color:#00D4FF">12</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">📅 Interviews scheduled</span>
+            <span class="metric-val" style="color:#00C896">3</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">✅ Placement rate</span>
+            <span class="metric-val" style="color:#FFD60A">96%</span>
+          </div>
+          <div class="metric-bar-wrap">
+            <div class="metric-bar-label"><span>Resume views</span><span style="color:#A9A4FF">84%</span></div>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width:84%;background:linear-gradient(90deg,#635BFF,#00D4FF)"></div></div>
+            <div class="metric-bar-label"><span>Response rate</span><span style="color:#00C896">67%</span></div>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width:67%;background:linear-gradient(90deg,#00C896,#00D4FF)"></div></div>
+            <div class="metric-bar-label"><span>Interview conversion</span><span style="color:#FF6B35">79%</span></div>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width:79%;background:linear-gradient(90deg,#FF6B35,#FF3CAC)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section why" id="why">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <div class="section-tag" style="display:block;text-align:center">Why Ashishtek</div>
+      <h2 class="section-title" style="text-align:center">
+        <span style="background:linear-gradient(90deg,white,#A9A4FF,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">The bench sales team</span><br>that never stops.
+      </h2>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card wc1">
+        <span class="why-icon">⚡</span>
+        <div class="why-title">48-Hour Turnaround</div>
+        <p class="why-desc">From onboarding to your first interview — our active pipeline generates submissions within 48 hours of joining.</p>
+      </div>
+      <div class="why-card wc2">
+        <span class="why-icon">📊</span>
+        <div class="why-title">Daily Status Reports</div>
+        <p class="why-desc">Every submission, every response, every interview — you receive a detailed daily update so you're never in the dark.</p>
+      </div>
+      <div class="why-card wc3">
+        <span class="why-icon">🔒</span>
+        <div class="why-title">Fully Confidential</div>
+        <p class="why-desc">Your profile is never shared without your approval. You have complete visibility and control over where your resume goes.</p>
+      </div>
+      <div class="why-card wc4">
+        <span class="why-icon">🤝</span>
+        <div class="why-title">Dedicated Recruiter</div>
+        <p class="why-desc">One recruiter, assigned to you, who knows your profile inside out. No handoffs. No strangers answering your calls.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISA STRIP -->
+<div class="visa-strip">
+  <div class="visa-inner">
+    <div class="visa-left">
+      <h3>🇺🇸 We work with all US work authorizations</h3>
+      <p>No matter your visa status — we've placed professionals like you before.</p>
+    </div>
+    <div class="visa-tags">
+      <span class="visa-tag">H-1B Transfer</span>
+      <span class="visa-tag">OPT / STEM OPT</span>
+      <span class="visa-tag">H4 EAD</span>
+      <span class="visa-tag">Green Card</span>
+      <span class="visa-tag">US Citizen</span>
+      <span class="visa-tag">TN Visa</span>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials" id="testimonials">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <div class="section-tag" style="display:block;text-align:center">Success Stories</div>
+      <h2 class="section-title" style="text-align:center">
+        IT professionals who landed<br><span style="background:linear-gradient(90deg,#FF6B35,#FF3CAC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">their dream contracts.</span>
+      </h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">I was on bench for 2 months with another recruiter. Ashishtek got me 3 interviews in my first week and I placed as a Java Developer within 18 days. Absolutely incredible.</p>
+        <div class="testi-author">
+          <div class="author-av av1">RK</div>
+          <div>
+            <div class="author-name">Rahul K.</div>
+            <div class="author-title">Java Developer · Texas · H1B Transfer</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">The mock interview coaching was the game-changer. They knew exactly what the client would ask. I cleared on my first try after failing twice with other recruiters.</p>
+        <div class="testi-author">
+          <div class="author-av av2">PS</div>
+          <div>
+            <div class="author-name">Priya S.</div>
+            <div class="author-title">Data Analyst · New Jersey · EAD</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">Ashishtek rewrote my LinkedIn and my profile views tripled in a week. First time in years I was getting inbound recruiter calls. True professionals who deliver results.</p>
+        <div class="testi-author">
+          <div class="author-av av3">MV</div>
+          <div>
+            <div class="author-name">Mohan V.</div>
+            <div class="author-title">Salesforce Consultant · Illinois · GC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT STRIP -->
+<div class="contact-strip" id="contact">
+  <div class="contact-item">
+    <div class="contact-icon" style="background:rgba(99,91,255,0.15)">📧</div>
+    <div>
+      <div class="contact-label">Email Us</div>
+      <div class="contact-value">info@ashishtek.com</div>
+    </div>
+  </div>
+  <div class="contact-item">
+    <div class="contact-icon" style="background:rgba(0,200,150,0.15)">📞</div>
+    <div>
+      <div class="contact-label">Call or WhatsApp</div>
+      <div class="contact-value">+1 (XXX) XXX-XXXX</div>
+    </div>
+  </div>
+  <div class="contact-item">
+    <div class="contact-icon" style="background:rgba(0,212,255,0.15)">💼</div>
+    <div>
+      <div class="contact-label">LinkedIn</div>
+      <div class="contact-value">linkedin.com/company/ashishtek</div>
+    </div>
+  </div>
+  <div class="contact-item">
+    <div class="contact-icon" style="background:rgba(255,107,53,0.15)">🕐</div>
+    <div>
+      <div class="contact-label">Hours (EST)</div>
+      <div class="contact-value">Mon–Sat · 9 AM – 7 PM</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <h2 class="cta-title">
+      Ready to get off the bench?<br>
+      <span style="background:linear-gradient(90deg,#635BFF,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Let's get you placed.</span>
+    </h2>
+    <p class="cta-desc">Schedule a free 30-minute consultation. No fees, no commitments. Just a dedicated team working harder than anyone else to land your next contract.</p>
+    <div class="cta-actions">
+      <button class="btn-primary" style="font-size:16px;padding:18px 36px" onclick="openModal('meeting')">📅 Schedule Free Consultation</button>
+      <button class="btn-secondary" style="font-size:16px;padding:17px 32px" onclick="openModal('callback')">📞 Request a Callback</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="#" class="logo" style="display:inline-flex;margin-bottom:4px">
+        <div class="logo-mark"><span>A</span></div>
+        <span class="logo-name" style="font-size:18px"><em>ashish</em>tek</span>
+      </a>
+      <p class="footer-brand-desc">Turning talent into success stories. The US IT bench sales recruiter that works harder than anyone to get you placed — fast, confidentially, at the best rate.</p>
+      <div class="everify-badge">
+        <div class="flag-stripes">
+          <div class="fs" style="background:#B22234"></div>
+          <div class="fs" style="background:white;border:1px solid #ddd"></div>
+          <div class="fs" style="background:#B22234"></div>
+          <div class="fs" style="background:white;border:1px solid #ddd"></div>
+          <div class="fs" style="background:#3C3B6E"></div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:#777;text-transform:uppercase">Participating in</div>
+          <div class="everify-wordmark"><span class="ev-blue">E</span><span class="ev-eq">=</span><span class="ev-verify">Verify</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Resume Marketing</a></li>
+        <li><a href="#services">Job Applications</a></li>
+        <li><a href="#services">Vendor Submissions</a></li>
+        <li><a href="#services">Recruiter Reach</a></li>
+        <li><a href="#services">LinkedIn Optimization</a></li>
+        <li><a href="#services">Interview Coaching</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#why">Why Ashishtek</a></li>
+        <li><a href="#testimonials">Success Stories</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Get Started</div>
+      <ul class="footer-links">
+        <li><a href="#" onclick="openModal('meeting')">Free Consultation</a></li>
+        <li><a href="#" onclick="openModal('callback')">Request Callback</a></li>
+        <li><a href="#contact">Email Us</a></li>
+        <li><a href="#contact">WhatsApp Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-bottom">
+    <div>© 2025 Ashishtek Consultancy Services. All rights reserved.</div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-green-bar">
+    <div class="fgb-copy">Turning talent into success stories — Serving US IT professionals nationwide.</div>
+    <div class="call-block">
+      <div class="headset-circle">🎧</div>
+      <div>
+        <div class="call-sms-label">Call – Or – SMS</div>
+        <div class="call-num">+1 (XXX) XXX-XXXX</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTON -->
+<div class="callback-float">
+  <div class="float-tooltip">Talk to a recruiter</div>
+  <button class="callback-btn" onclick="openModal('callback')">📞</button>
+</div>
+
+<!-- CALLBACK MODAL -->
+<div class="modal-overlay" id="callbackModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('callbackModal')">✕</button>
+    <h2 class="modal-title">Request a Callback</h2>
+    <p class="modal-sub">We'll call you back within 2 hours.</p>
+    <div id="callbackForm">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="John"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Smith"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="form-group">
+        <label class="form-label">Visa Status</label>
+        <select class="form-select">
+          <option value="">Select visa status</option>
+          <option>H1B</option><option>OPT / STEM OPT</option><option>EAD (H4, L2)</option><option>Green Card</option><option>US Citizen</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Primary Technology</label><input class="form-input" type="text" placeholder="e.g. Java Developer, AWS Engineer..."></div>
+      <div class="form-group">
+        <label class="form-label">Best Time (EST)</label>
+        <select class="form-select">
+          <option>9 AM – 11 AM EST</option><option>11 AM – 1 PM EST</option><option>1 PM – 3 PM EST</option><option>3 PM – 5 PM EST</option><option>5 PM – 7 PM EST</option>
+        </select>
+      </div>
+      <button class="form-submit" onclick="submitForm('callbackForm','callbackSuccess','callbackModal')">📞 Request My Callback</button>
+    </div>
+    <div class="form-success" id="callbackSuccess">
+      <div class="success-emoji">🚀</div>
+      <div class="success-title">We'll call you soon!</div>
+      <p class="success-sub">Our recruiter will reach out at your preferred time. Get ready for your next big opportunity.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MEETING MODAL -->
+<div class="modal-overlay" id="meetingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('meetingModal')">✕</button>
+    <h2 class="modal-title">Schedule Free Consultation</h2>
+    <p class="modal-sub">Book your free 30-minute strategy session.</p>
+    <div id="meetingForm">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="John"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Smith"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="john@email.com"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Preferred Date</label><input class="form-input" type="date"></div>
+        <div class="form-group">
+          <label class="form-label">Time (EST)</label>
+          <select class="form-select">
+            <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Your Technology / Role</label><input class="form-input" type="text" placeholder="e.g. AWS Cloud Engineer, React Developer..."></div>
+      <button class="form-submit" onclick="submitForm('meetingForm','meetingSuccess','meetingModal')">📅 Confirm My Free Meeting</button>
+    </div>
+    <div class="form-success" id="meetingSuccess">
+      <div class="success-emoji">🎉</div>
+      <div class="success-title">Meeting Confirmed!</div>
+      <p class="success-sub">Check your email for a calendar invite. We're excited to help you land your next great opportunity!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(t){
+  document.getElementById(t==='callback'?'callbackModal':'meetingModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',function(e){if(e.target===this)closeModal(this.id)});
+});
+function submitForm(fId,sId,mId){
+  document.getElementById(fId).style.display='none';
+  document.getElementById(sId).style.display='block';
+  setTimeout(()=>{
+    closeModal(mId);
+    document.getElementById(fId).style.display='block';
+    document.getElementById(sId).style.display='none';
+  },3000);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>closeModal(m.id))});
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
