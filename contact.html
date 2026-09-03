@@ -1,0 +1,720 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us — AshishTek</title>
+  <meta name="description" content="Get in touch with AshishTek — start your tech career journey or find top talent for your business. Request a callback or book a free consultation.">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── CONTACT PAGE ── */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: start; }
+
+    .contact-info-title { font-family: 'Inter Tight',sans-serif; font-size: clamp(26px,3.5vw,40px); font-weight: 800; letter-spacing: -.03em; color: var(--text-1); line-height: 1.1; margin: 12px 0 14px; }
+    .contact-info-sub { font-size: 16px; color: var(--text-3); line-height: 1.75; max-width: 380px; }
+
+    .cdetails { display: flex; flex-direction: column; gap: 14px; margin-top: 36px; }
+    .cdetail-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); transition: var(--ease); box-shadow: var(--shadow-sm); }
+    .cdetail-item:hover { border-color: var(--blue-pale); box-shadow: var(--shadow-md); }
+    .cdi-icon { width: 44px; height: 44px; border-radius: var(--r-sm); background: var(--blue-bg); border: 1px solid var(--blue-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .cdi-icon.red { background: var(--red-pale); border-color: #f0c0c8; }
+    .cdi-label { font-size: 11px; color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+    .cdi-value { font-size: 15px; color: var(--text-1); font-weight: 500; margin-top: 3px; }
+    .cdi-value a { color: var(--blue); }
+    .cdi-value a:hover { color: var(--blue-hover); }
+
+    .quick-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .qbtn { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-md); cursor: pointer; transition: var(--ease); box-shadow: var(--shadow-sm); text-align: left; }
+    .qbtn:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+    .qbtn.blue { border-color: var(--blue-pale); }
+    .qbtn.blue:hover { border-color: var(--blue); background: var(--blue-bg); }
+    .qbtn.red-b { border-color: #f0c0c8; }
+    .qbtn.red-b:hover { border-color: var(--red); background: var(--red-pale); }
+    .qbtn-icon { width: 40px; height: 40px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .qbtn-icon-blue { background: var(--blue-bg); }
+    .qbtn-icon-red { background: var(--red-pale); }
+    .qbtn-title { font-family: 'Manrope',sans-serif; font-size: 14px; font-weight: 700; color: var(--text-1); }
+    .qbtn-sub { font-size: 12px; color: var(--text-4); margin-top: 2px; }
+    .qbtn-arrow { margin-left: auto; font-size: 18px; color: var(--text-4); transition: var(--ease); cursor: pointer; }
+    .qbtn:hover .qbtn-arrow { transform: translateX(4px); color: var(--text-2); }
+
+    /* Service radio cards */
+    .service-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+    .svc-opt { padding: 13px 14px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: var(--r-md); cursor: pointer; transition: var(--ease); display: flex; align-items: center; gap: 9px; }
+    .svc-opt:hover { border-color: var(--blue-pale); }
+    .svc-opt.selected { border-color: var(--blue); background: var(--blue-bg); }
+    .svc-opt input[type="radio"] { display: none; }
+    .svc-icon { font-size: 17px; }
+    .svc-label { font-size: 13px; font-weight: 600; color: var(--text-2); }
+
+    /* Map placeholder */
+    .map-box { border-radius: var(--r-xl); overflow: hidden; border: 1px solid var(--border); margin-top: 32px; position: relative; height: 220px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+    .map-box::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 28px 28px; opacity: .5; }
+    .map-pin { font-size: 42px; position: relative; z-index: 1; }
+    .map-label { font-family: 'Manrope',sans-serif; font-size: 14px; font-weight: 700; color: var(--text-3); position: relative; z-index: 1; }
+
+    /* Form success state */
+    .form-success { display: none; text-align: center; padding: 48px 24px; }
+    .form-success.show { display: block; }
+    .fs-icon { font-size: 56px; margin-bottom: 16px; }
+    .fs-title { font-family: 'Inter Tight',sans-serif; font-size: 24px; font-weight: 800; color: var(--text-1); margin-bottom: 10px; }
+    .fs-text { font-size: 15px; color: var(--text-3); line-height: 1.7; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 760px; margin: 0 auto; }
+    .faq-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .faq-q { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; cursor: pointer; font-family: 'Manrope',sans-serif; font-size: 15px; font-weight: 600; color: var(--text-1); transition: var(--ease); user-select: none; }
+    .faq-q:hover { color: var(--blue); background: var(--bg-alt); }
+    .faq-arrow { font-size: 20px; color: var(--text-4); transition: var(--ease); flex-shrink: 0; cursor: pointer; }
+    .faq-item.open .faq-arrow { transform: rotate(90deg); color: var(--blue); }
+    .faq-item.open .faq-q { color: var(--blue); }
+    .faq-item.open { border-color: var(--blue-pale); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+    .faq-item.open .faq-a { max-height: 200px; }
+    .faq-a-inner { padding: 0 22px 18px; font-size: 14px; color: var(--text-3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+
+    @media (max-width: 900px) { .contact-layout { grid-template-columns: 1fr; gap: 48px; } }
+    @media (max-width: 500px) { .service-selector { grid-template-columns: 1fr; } }
+  </style>
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  </script>
+  <script type="text/javascript">
+    (function(){
+        emailjs.init({
+          publicKey: "9FPzKF6Pfh1kOge_Q",
+        });
+    })();
+  </script>
+</head>
+<body>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="callbackModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('callbackModal')">&times;</button>
+    <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
+    <div class="modal-title">Request a Callback</div>
+    <p class="modal-sub">Leave your number and we'll call you back within 2 hours during business hours.</p>
+    <form onsubmit="handleModal(event,'callbackModal')">
+      <div class="form-row">
+        <div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" class="form-control" placeholder="John" required></div>
+        <div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" class="form-control" placeholder="Doe" required></div>
+      </div>
+      <div class="form-group"><label for="cb_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="cb_phone" class="form-control" placeholder="+1 (555) 000-0000" required></div>
+      <div class="form-group"><label for="cb_time">Best Time to Call <span style="color:var(--red)">*</span></label>
+        <select id="cb_time" class="form-control form-control-select" required>
+          <option value="">Select best time...</option>
+          <option value="Morning">Morning (9AM–12PM CST)</option>
+          <option value="Afternoon">Afternoon (12PM–4PM CST)</option>
+          <option value="Evening">Evening (4PM–6PM CST)</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
+    </form>
+  </div>
+</div>
+<div class="modal-overlay" id="bookModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('bookModal')">&times;</button>
+    <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
+    <div class="modal-title">Book Your Free Slot</div>
+    <p class="modal-sub">Schedule a free 30-min consultation with an AshishTek career specialist. No commitment needed.</p>
+    <form onsubmit="handleModal(event,'bookModal')">
+      <div class="form-row">
+        <div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" class="form-control" placeholder="John" required></div>
+        <div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" class="form-control" placeholder="Doe" required></div>
+      </div>
+      <div class="form-group"><label for="bm_email">Email Address <span style="color:var(--red)">*</span></label><input type="email" id="bm_email" class="form-control" placeholder="john@example.com" required></div>
+      <div class="form-group"><label for="bm_service">I'm Interested In <span style="color:var(--red)">*</span></label>
+        <select id="bm_service" class="form-control form-control-select" required>
+          <option value="">Select service...</option>
+          <option value="Career Placement">Career Placement</option>
+          <option value="Training & Mentorship">Training &amp; Mentorship</option>
+          <option value="Resume & Interview Prep">Resume &amp; Interview Prep</option>
+          <option value="Recruitment Solutions">Recruitment Solutions</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" class="form-control" required></div>
+      <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
+      <p style="text-align:center;font-size:12px;color:var(--text-4);margin-top:10px">🔒 Your info is confidential. No spam, ever.</p>
+    </form>
+  </div>
+</div>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-wrap">
+    <img class="loader-logo-img" src="images/logo.png" alt="AshishTek" onerror="this.style.display='none'">
+    <div class="loader-ring"></div>
+    <div class="loader-ring-2"></div>
+    <div class="loader-ring-3"></div>
+  </div>
+  <div class="loader-brand">Ashish<span>Tek</span></div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand" title="AshishTek — Home">
+        <img src="images/logo.png" alt="AshishTek" class="nav-logo" onerror="this.outerHTML='<div class=nav-logo-fallback>A</div>'">
+        <div class="nav-brand-text">
+          <span class="nav-brand-name">Ashish<span class="accent-red">Tek</span></span>
+          <span class="nav-brand-sub">Connecting Talent to Tech</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="resume.html" style="color:var(--red);font-weight:700">📄 Resume Check</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-callback-btn" onclick="openModal('callbackModal')">📞 Request Callback</button>
+        <button class="nav-book-btn" onclick="openModal('bookModal')">Book Free Session ↗</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div><div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">&times;</button>
+  <a href="index.html" onclick="closeMobile()">Home</a>
+  <a href="about.html" onclick="closeMobile()">About Us</a>
+  <a href="services.html" onclick="closeMobile()">Services</a>
+  <a href="contact.html" onclick="closeMobile()">Contact</a>
+  <a href="resume.html" onclick="closeMobile()" style="color:var(--red);font-weight:700">📄 Resume Check</a>
+  <button class="btn btn-red" onclick="openModal('callbackModal');closeMobile()">📞 Request Callback</button>
+  <button class="btn btn-blue" onclick="openModal('bookModal');closeMobile()">Book Free Session ↗</button>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff"><span class="tag-dot" style="background:#fff"></span> Get In Touch</div>
+      <h1>Let's Start Your<br>Tech Journey</h1>
+      <p>Whether you're ready to launch your tech career or a company looking to hire exceptional talent — we're here to make it happen. Reach out today.</p>
+      <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn" style="background:#fff;color:var(--blue);font-weight:700;cursor:pointer" onclick="openModal('bookModal')">📅 Book Free Consultation</button>
+        <button class="btn btn-outline-white" onclick="openModal('callbackModal')" style="cursor:pointer">📞 Request Callback</button>
+      </div>
+      <div class="page-breadcrumb"><a href="index.html">Home</a><span>›</span><span>Contact</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MAIN -->
+<section class="section section-bg">
+  <div class="container">
+    <div class="contact-layout">
+
+      <!-- INFO PANEL -->
+      <div>
+        <div class="tag"><span class="tag-dot"></span> Contact Information</div>
+        <h2 class="contact-info-title">We'd Love to<br>Hear From You</h2>
+        <p class="contact-info-sub">Fill out the form or use the quick options below. Our team responds within 24 hours — and support is available 7 days a week including weekends.</p>
+
+        <div class="cdetails reveal">
+          <div class="cdetail-item">
+            <div class="cdi-icon">📍</div>
+            <div><div class="cdi-label">Headquarters</div><div class="cdi-value">7091, 4th St N, Ste 300, St. Petersburg, FL 33702, USA</div></div>
+          </div>
+          <div class="cdetail-item">
+            <div class="cdi-icon">✉️</div>
+            <div><div class="cdi-label">Email Us</div><div class="cdi-value"><a href="mailto:info@ashishtek.com">info@ashishtek.com</a></div></div>
+          </div>
+          <div class="cdetail-item">
+            <div class="cdi-icon red">📞</div>
+            <div><div class="cdi-label">Call Us</div><div class="cdi-value"><a href="tel:+17274140470">+1 (727) 414-0470</a></div></div>
+          </div>
+          <div class="cdetail-item">
+            <div class="cdi-icon">🕘</div>
+            <div><div class="cdi-label">Business Hours</div><div class="cdi-value">Mon–Fri 9AM–6PM EST · Weekends Available</div></div>
+          </div>
+        </div>
+
+        <!-- Quick action buttons -->
+        <div class="quick-btns reveal" style="transition-delay:.15s">
+          <button class="qbtn blue" onclick="openModal('bookModal')" style="cursor:pointer">
+            <div class="qbtn-icon qbtn-icon-blue">📅</div>
+            <div><div class="qbtn-title">Book Free Consultation</div><div class="qbtn-sub">30-min session with a career specialist</div></div>
+            <span class="qbtn-arrow">→</span>
+          </button>
+          <button class="qbtn red-b" onclick="openModal('callbackModal')" style="cursor:pointer">
+            <div class="qbtn-icon qbtn-icon-red">📞</div>
+            <div><div class="qbtn-title">Request a Callback</div><div class="qbtn-sub">We'll call you back within 2 hours</div></div>
+            <span class="qbtn-arrow">→</span>
+          </button>
+        </div>
+
+        <!-- Map placeholder -->
+        <div class="map-box reveal" style="transition-delay:.2s">
+          <div class="map-pin">📍</div>
+          <div class="map-label">Florida, United States 🇺🇸</div>
+          <span style="font-size:12px;color:var(--text-4);position:relative;z-index:1">Serving professionals nationwide across all 50 states</span>
+        </div>
+      </div>
+
+      <!-- FORM PANEL -->
+      <div class="reveal-right">
+        <div class="form-card">
+          <div id="formContent">
+            <h3 style="font-family:'Manrope',sans-serif;font-size:22px;font-weight:700;color:var(--text-1);margin-bottom:6px">Send Us a Message</h3>
+            <p style="font-size:14px;color:var(--text-3);margin-bottom:28px">Tell us about yourself and what you're looking for — we'll get back to you within 24 hours.</p>
+
+            <div class="validation-banner" id="validationBanner"><span class="validation-banner-icon">⚠️</span> Please check your details — some required fields are missing or incorrect.</div>
+            <form id="contactForm" onsubmit="submitForm(event)" novalidate>
+
+              <!-- Service selector -->
+              <div style="margin-bottom:22px">
+                <label style="font-size:13px;color:var(--text-2);font-weight:600;display:block;margin-bottom:10px">I'm interested in</label>
+                <div class="service-selector" id="svcSelector">
+                  <label class="svc-opt selected" onclick="selectSvc(this)">
+                    <input type="radio" id="svc_placement" name="svc" value="placement" checked>
+                    <span class="svc-icon">🎯</span><span class="svc-label">Career Placement</span>
+                  </label>
+                  <label class="svc-opt" onclick="selectSvc(this)">
+                    <input type="radio" id="svc_training" name="svc" value="training">
+                    <span class="svc-icon">📚</span><span class="svc-label">Training &amp; Mentorship</span>
+                  </label>
+                  <label class="svc-opt" onclick="selectSvc(this)">
+                    <input type="radio" id="svc_resume" name="svc" value="resume">
+                    <span class="svc-icon">📄</span><span class="svc-label">Resume &amp; Interview Prep</span>
+                  </label>
+                  <label class="svc-opt" onclick="selectSvc(this)">
+                    <input type="radio" id="svc_recruitment" name="svc" value="recruitment">
+                    <span class="svc-icon">🤝</span><span class="svc-label">Recruitment Solutions</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group"><label for="contact_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="contact_firstName" name="firstName" class="form-control" placeholder="John" required><span class="field-error"></span></div>
+                <div class="form-group"><label for="contact_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="contact_lastName" name="lastName" class="form-control" placeholder="Doe" required><span class="field-error"></span></div>
+              </div>
+              <div class="form-group"><label for="contact_email">Email Address <span style="color:var(--red)">*</span></label><input type="email" id="contact_email" name="email" class="form-control" placeholder="john@example.com" required><span class="field-error"></span></div>
+              <div class="form-group"><label for="contact_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="contact_phone" name="phone" class="form-control" placeholder="+1 (555) 000-0000" required><span class="field-error"></span></div>
+              <div class="form-group"><label for="contact_experience">Your Experience Level <span style="color:var(--red)">*</span></label>
+                <select id="contact_experience" name="experience" class="form-control form-control-select" required>
+                  <option value="">Select your background...</option>
+                  <option>Entry Level (0–2 years)</option>
+                  <option>Mid Level (2–5 years)</option>
+                  <option>Senior Level (5+ years)</option>
+                  <option>No tech experience yet</option>
+                  <option>I'm an Employer / Recruiter</option>
+                </select>
+                <span class="field-error"></span>
+              </div>
+              <div class="form-group"><label for="contact_domain">Target Tech Domain <span style="color:var(--red)">*</span></label>
+                <select id="contact_domain" name="domain" class="form-control form-control-select" required>
+                  <option value="">Select a domain...</option>
+                  <option>Data Analysis</option>
+                  <option>Business Analysis</option>
+                  <option>Cybersecurity</option>
+                  <option>DevOps</option>
+                  <option>Cloud Computing</option>
+                  <option>Software Development</option>
+                  <option>AI &amp; Machine Learning</option>
+                  <option>QA &amp; Testing</option>
+                  <option>Other</option>
+                </select>
+                <span class="field-error"></span>
+              </div>
+              <div class="form-group"><label for="contact_message">Message <span style="color:var(--red)">*</span></label>
+                <textarea id="contact_message" name="message" class="form-control form-textarea" placeholder="Tell us about your background, goals, and what you're looking for. We'd love to hear your story..." required></textarea>
+                <span class="field-error"></span>
+              </div>
+              <button type="submit" class="btn btn-blue btn-full" id="submitBtn" style="font-size:15px;padding:14px">
+                Send Message &nbsp;↗
+              </button>
+              <p style="text-align:center;font-size:12px;color:var(--text-4);margin-top:12px">🔒 Your information is kept confidential and never shared.</p>
+            </form>
+          </div>
+
+          <!-- Success -->
+          <div class="form-success" id="formSuccess">
+            <div class="fs-icon">✅</div>
+            <div class="fs-title">Message Sent!</div>
+            <p class="fs-text">Thank you for reaching out. A member of our team will get back to you within <strong>24 hours</strong>. We're excited to help you on your tech journey!</p>
+            <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+              <a href="services.html" class="btn btn-blue">Explore Services ↗</a>
+              <button class="btn btn-ghost" onclick="openModal('bookModal')" style="cursor:pointer">📅 Book Free Session</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUICK CONNECT CARDS -->
+<section class="section section-white">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag"><span class="tag-dot"></span> Quick Connect</div>
+      <h2 class="section-title">Other Ways to Reach Us</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px">
+      <div class="card reveal" style="text-align:center">
+        <div class="card-icon" style="margin:0 auto 18px">📞</div>
+        <h3 class="card-title">Call Us Directly</h3>
+        <p class="card-text">Speak with a career specialist right away. Mon–Fri 9AM–6PM, weekends available.</p>
+        <a href="tel:+15551234567" class="btn btn-outline-blue" style="margin-top:20px;display:inline-flex">+1 (555) 123-4567</a>
+      </div>
+      <div class="card reveal" style="text-align:center;transition-delay:.1s">
+        <div class="card-icon card-icon-red" style="margin:0 auto 18px">📅</div>
+        <h3 class="card-title">Book a Free Session</h3>
+        <p class="card-text">Schedule your free 30-min consultation and start your journey with AshishTek today.</p>
+        <button class="btn btn-blue" onclick="openModal('bookModal')" style="cursor:pointer;margin-top:20px">Book Free Slot ↗</button>
+      </div>
+      <div class="card reveal" style="text-align:center;transition-delay:.2s">
+        <div class="card-icon" style="margin:0 auto 18px">✉️</div>
+        <h3 class="card-title">Email Us</h3>
+        <p class="card-text">Prefer email? Drop us a line anytime and we'll respond within one business day.</p>
+        <a href="mailto:info@ashishtek.com" class="btn btn-outline-blue" style="margin-top:20px;display:inline-flex">info@ashishtek.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag-red"><span class="tag-dot"></span> FAQ</div>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub">Got questions? We've got answers. Here are the most common ones we receive.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need prior tech experience to apply?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Not at all! We work with candidates at every level — including complete beginners. Our training programs are designed specifically to take you from zero experience to job-ready in domains like Data Analysis, Business Analysis, DevOps, and more.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How long does the placement process take?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Timeline varies based on your skill level and target role. On average, candidates who go through our full training and placement program receive their first offer within 3–6 months. Experienced candidates are often placed within 4–6 weeks.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is the "Book Your Slot" free consultation?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">It's a free, no-obligation 30-minute call with one of our career specialists. We'll discuss your background, goals, and create a preliminary roadmap for your tech career journey — completely free with no commitment required.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Do you work with employers / companies too?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Absolutely. Our Recruitment Solutions service is designed for businesses seeking top-tier technical talent. We handle sourcing, screening, and coordination — delivering qualified candidates within 72 hours of engagement.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Are you available on weekends?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes! We know your schedule may not fit typical business hours. Our support team is available on weekends (Saturday and Sunday) to answer questions and schedule consultations. We're committed to being there when you need us.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What employment types do you support?<span class="faq-arrow" style="cursor:pointer">›</span></div>
+        <div class="faq-a"><div class="faq-a-inner">We facilitate W2, Contract-to-Hire (C2H), Contract (Corp-to-Corp), and Full-Time Employee (FTE) roles depending on candidate preference and employer requirements across all 50 US states.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-white">
+  <div class="container">
+    <div class="cta-strip reveal">
+      <h2>Your Next Chapter Begins<br>With One Message</h2>
+      <p>Take the first step today. Our team is ready to listen, guide, and place you into the tech career you've always dreamed of.</p>
+      <div class="btn-row">
+        <button class="btn btn-outline-white" onclick="openModal('bookModal')" style="cursor:pointer">📅 Book Free Session ↗</button>
+        <button class="btn" style="background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.4);cursor:pointer" onclick="openModal('callbackModal')">📞 Request Callback</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-main-grid">
+      <!-- Left Column -->
+      <div class="footer-brand-col">
+        <a href="index.html" class="footer-brand-header" title="AshishTek - Home">
+          <img src="images/logo.png" alt="AshishTek" class="footer-logo" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Ashish<span class="r">Tek</span></span>
+        </a>
+        <p class="footer-tagline">Where Passion Meets Next-Gen Technologies. Empowering tech professionals across America.</p>
+        <a href="contact.html" class="footer-contact-btn">Contact Us &rarr;</a>
+        <div class="footer-everify-wrap">
+          <img src="images/E-Verify_logo.svg.webp" alt="E-Verify" class="footer-everify-logo">
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="footer-nav-col">
+        <div class="footer-links-grid">
+          <div>
+            <div class="footer-col-title">Home</div>
+            <ul class="footer-links-list">
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="resume.html">Careers</a></li>
+              <li><a href="contact.html">Refer &amp; Earn</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Other</div>
+            <ul class="footer-links-list">
+              <li><a href="about.html">Privacy Policy</a></li>
+              <li><a href="about.html">Terms and Conditions</a></li>
+              <li><a href="services.html">Partner Company</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Contact</div>
+            <ul class="footer-links-list">
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="contact.html#faq">FAQ's</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-address-block">
+          <div class="footer-address-title">Address</div>
+          <div class="footer-address-text">Florida, United States</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-copy">@2025, All Rights Reserved</div>
+      <a href="contact.html" class="footer-refer-btn">🎁 Refer &amp; Earn</a>
+    </div>
+  </div>
+  <div class="footer-stripe"></div>
+</footer>
+
+<div id="cursorDot"></div>
+<div id="toast">✅ Request submitted! We'll be in touch soon.</div>
+
+<!-- CENTERED AD POPUP -->
+<div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
+<div class="center-nudge" id="autoNudge">
+  <div class="center-nudge-header">
+    <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
+    <div class="center-nudge-eyebrow">🔥 Limited Free Slots Available</div>
+    <div class="center-nudge-title">Launch Your Tech Career with AshishTek</div>
+    <div class="center-nudge-sub">Florida-based · 200+ professionals placed · 95% success rate</div>
+  </div>
+  <div class="center-nudge-body">
+    <div class="center-nudge-perks">
+      <div class="cnp-item"><div class="cnp-icon">📅</div>Free 30-min career consultation — no strings attached</div>
+      <div class="cnp-item"><div class="cnp-icon">🎯</div>Personalized roadmap to your target tech role</div>
+      <div class="cnp-item"><div class="cnp-icon">🤝</div>Access to 200+ employer partners across the US</div>
+      <div class="cnp-item"><div class="cnp-icon">📞</div>Get a callback from a specialist within 2 hours</div>
+    </div>
+    <div class="center-nudge-btns">
+      <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Consultation</button>
+      <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Request Callback</button>
+    </div>
+    <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
+  </div>
+  <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
+</div>
+
+<script>
+  // Loading screen
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loadingScreen');
+    setTimeout(() => {
+      loader.classList.add('fade-out');
+      setTimeout(() => { loader.style.display = 'none'; }, 650);
+    }, 1600);
+  });
+
+  // Cursor Follower Dot
+  const cdot = document.getElementById('cursorDot');
+  if (cdot) { let cx=window.innerWidth/2,cy=window.innerHeight/2,dx=cx,dy=cy; document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY}); document.addEventListener('mousedown',()=>cdot.classList.add('clicking')); document.addEventListener('mouseup',()=>cdot.classList.remove('clicking')); (function animateDot(){dx+=(cx-dx)*.14;dy+=(cy-dy)*.14;cdot.style.left=dx+'px';cdot.style.top=dy+'px';requestAnimationFrame(animateDot)})(); }
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('mobileNav').classList.add('open'); document.getElementById('mobileBackdrop').classList.add('open'); });
+  document.getElementById('mobileClose').addEventListener('click', () => { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); });
+  function closeMobile() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); }
+
+  // Scroll reveal
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); ro.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ro.observe(el));
+
+  // Modals
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) closeModal(m.id); }));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); });
+
+  function handleModal(e, id) {
+    e.preventDefault();
+    closeModal(id);
+    showToast('✅ Request submitted! We\'ll be in touch soon.');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+    setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 4000);
+  }
+
+  function selectSvc(el) {
+    document.querySelectorAll('.svc-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type="radio"]').checked = true;
+  }
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ── Enhanced Form Validation ──
+  function validateField(input) {
+    const group = input.closest('.form-group');
+    const errEl = group ? group.querySelector('.field-error') : null;
+    let valid = true;
+    let msg = '';
+
+    input.classList.remove('error', 'success');
+    if (group) group.classList.remove('has-error');
+    if (errEl) errEl.classList.remove('show');
+
+    if (input.hasAttribute('required') && !input.value.trim()) {
+      valid = false;
+      msg = 'This field is required. Please check your details.';
+    } else if (input.type === 'email' && input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+      valid = false;
+      msg = 'Please enter a valid email address.';
+    } else if (input.type === 'tel' && input.value && input.value.replace(/\D/g, '').length < 7) {
+      valid = false;
+      msg = 'Please enter a valid phone number.';
+    }
+
+    if (!valid) {
+      input.classList.add('error');
+      if (group) group.classList.add('has-error');
+      if (errEl) { errEl.textContent = msg; errEl.classList.add('show'); }
+    } else if (input.value.trim()) {
+      input.classList.add('success');
+    }
+    return valid;
+  }
+
+  // Attach live validation on blur/input/change
+  document.querySelectorAll('#contactForm .form-control').forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => { if (input.classList.contains('error')) validateField(input); });
+    input.addEventListener('change', () => validateField(input));
+  });
+
+  function submitForm(e) {
+    e.preventDefault();
+    const inputs = Array.from(document.querySelectorAll('#contactForm .form-control[required]'));
+    let allValid = true;
+    inputs.forEach(input => { if (!validateField(input)) allValid = false; });
+
+    const banner = document.getElementById('validationBanner');
+    if (!allValid) {
+      if(banner) banner.classList.add('show');
+      const firstErr = document.querySelector('#contactForm .form-control.error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if(banner) banner.classList.remove('show');
+
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '⏳ Sending...'; btn.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }, 1400);
+  }
+
+  // Centered Ad Popup — repeats every 20 seconds after dismiss
+  let nudgeRepeatTimer = null;
+  function showNudge() {
+    const fill = document.getElementById('nudgeTimerFill');
+    if (fill) { fill.style.animation='none'; fill.offsetHeight; fill.style.animation=''; }
+    document.getElementById('autoNudge').classList.add('show');
+    document.getElementById('nudgeBackdrop').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function dismissNudge() {
+    document.getElementById('autoNudge').classList.remove('show');
+    document.getElementById('nudgeBackdrop').classList.remove('show');
+    document.body.style.overflow = '';
+    clearTimeout(nudgeRepeatTimer);
+    nudgeRepeatTimer = setTimeout(showNudge, 120000);
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    
+    // 1. Run your existing validation checks
+    const inputs = Array.from(document.querySelectorAll('#contactForm .form-control[required]'));
+    let allValid = true;
+    inputs.forEach(input => { if (!validateField(input)) allValid = false; });
+
+    const banner = document.getElementById('validationBanner');
+    if (!allValid) {
+      if(banner) banner.classList.add('show');
+      const firstErr = document.querySelector('#contactForm .form-control.error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if(banner) banner.classList.remove('show');
+
+    // 2. Change button state to let the user know it is processing
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '⏳ Sending...'; 
+    btn.disabled = true;
+
+    // 3. Build the data package to send to your EmailJS Template
+    let parms = {
+      firstName: document.getElementById("contact_firstName").value,
+      lastName: document.getElementById("contact_lastName").value,
+      email: document.getElementById("contact_email").value,
+      phone: document.getElementById("contact_phone").value,
+      service: document.querySelector('input[name="svc"]:checked').value,
+      experience: document.getElementById("contact_experience").value,
+      domain: document.getElementById("contact_domain").value,
+      message: document.getElementById("contact_message").value
+    };
+
+    // 4. Send the email using EmailJS
+    emailjs.send("service_w8xypg7", "template_l2tp59i", parms)
+      .then(function(res) {
+        // SUCCESS: Hide the form and show your success message
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      })
+      .catch(function(err) {
+        // ERROR: If something goes wrong, reset the button and alert the user
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Send Message &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong sending your message. Please check your connection and try again.");
+      });
+  }
+  setTimeout(showNudge, 30000);
+</script>
+</body>
+</html>
