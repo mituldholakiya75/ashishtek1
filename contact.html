@@ -97,7 +97,7 @@
     <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
     <div class="modal-title">Request a Callback</div>
     <p class="modal-sub">Leave your number and we'll call you back within 2 hours during business hours.</p>
-    <form onsubmit="handleModal(event,'callbackModal')">
+    <form onsubmit="submitCallbackForm(event)">
       <div class="form-row">
         <div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" class="form-control" placeholder="John" required></div>
         <div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" class="form-control" placeholder="Doe" required></div>
@@ -111,17 +111,18 @@
           <option value="Evening">Evening (4PM–6PM CST)</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
+      <button type="submit" id="cbSubmitBtn" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
     </form>
   </div>
 </div>
+
 <div class="modal-overlay" id="bookModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('bookModal')">&times;</button>
     <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
     <div class="modal-title">Book Your Free Slot</div>
     <p class="modal-sub">Schedule a free 30-min consultation with an AshishTek career specialist. No commitment needed.</p>
-    <form onsubmit="handleModal(event,'bookModal')">
+    <form onsubmit="submitBookForm(event)">
       <div class="form-row">
         <div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" class="form-control" placeholder="John" required></div>
         <div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" class="form-control" placeholder="Doe" required></div>
@@ -137,7 +138,7 @@
         </select>
       </div>
       <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" class="form-control" required></div>
-      <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
+      <button type="submit" id="bmSubmitBtn" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
       <p style="text-align:center;font-size:12px;color:var(--text-4);margin-top:10px">🔒 Your info is confidential. No spam, ever.</p>
     </form>
   </div>
@@ -185,7 +186,8 @@
     </div>
   </div>
 </nav>
-<div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div><div class="mobile-nav" id="mobileNav">
+<div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div>
+<div class="mobile-nav" id="mobileNav">
   <button class="mobile-close" id="mobileClose">&times;</button>
   <a href="index.html" onclick="closeMobile()">Home</a>
   <a href="about.html" onclick="closeMobile()">About Us</a>
@@ -560,12 +562,6 @@
   document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) closeModal(m.id); }));
   document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); });
 
-  function handleModal(e, id) {
-    e.preventDefault();
-    closeModal(id);
-    showToast('✅ Request submitted! We\'ll be in touch soon.');
-  }
-
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
@@ -624,8 +620,10 @@
     input.addEventListener('change', () => validateField(input));
   });
 
+  // ── 1. MAIN CONTACT FORM SUBMISSION ──
   function submitForm(e) {
     e.preventDefault();
+    
     const inputs = Array.from(document.querySelectorAll('#contactForm .form-control[required]'));
     let allValid = true;
     inputs.forEach(input => { if (!validateField(input)) allValid = false; });
@@ -640,15 +638,102 @@
     if(banner) banner.classList.remove('show');
 
     const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '⏳ Sending...'; btn.disabled = true;
+    btn.innerHTML = '⏳ Sending...'; 
+    btn.disabled = true;
 
-    setTimeout(() => {
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('formSuccess').classList.add('show');
-    }, 1400);
+    let parms = {
+      firstName: document.getElementById("contact_firstName").value,
+      lastName: document.getElementById("contact_lastName").value,
+      email: document.getElementById("contact_email").value,
+      phone: document.getElementById("contact_phone").value,
+      service: document.querySelector('input[name="svc"]:checked').value,
+      experience: document.getElementById("contact_experience").value,
+      domain: document.getElementById("contact_domain").value,
+      message: document.getElementById("contact_message").value
+    };
+
+    emailjs.send("service_w8xypg7", "template_l2tp59i", parms)
+      .then(function(res) {
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Send Message &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong sending your message. Please check your connection and try again.");
+      });
   }
 
-  // Centered Ad Popup — repeats every 20 seconds after dismiss
+  // ── 2. REQUEST CALLBACK MODAL SUBMISSION ──
+  function submitCallbackForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('cbSubmitBtn');
+    btn.innerHTML = '⏳ Sending...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('cb_firstName').value,
+      lastName: document.getElementById('cb_lastName').value,
+      email: "-",
+      phone: document.getElementById('cb_phone').value,
+      service: "-",
+      date: "-",
+      bestTime: document.getElementById('cb_time').value
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        closeModal('callbackModal');
+        showToast('✅ Callback request submitted! We will call you soon.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong sending your request. Please try again.");
+      });
+  }
+
+  // ── 3. BOOK FREE SESSION MODAL SUBMISSION ──
+  function submitBookForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('bmSubmitBtn');
+    btn.innerHTML = '⏳ Booking...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('bm_firstName').value,
+      lastName: document.getElementById('bm_lastName').value,
+      email: document.getElementById('bm_email').value,
+      phone: "-",
+      service: document.getElementById('bm_service').value,
+      date: document.getElementById('bm_date').value,
+      bestTime: "-"
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        closeModal('bookModal');
+        showToast('✅ Consultation slot booked! We will contact you shortly.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong booking your slot. Please try again.");
+      });
+  }
+
+  // Centered Ad Popup — repeats every 120 seconds after dismiss
   let nudgeRepeatTimer = null;
   function showNudge() {
     const fill = document.getElementById('nudgeTimerFill');
@@ -665,55 +750,6 @@
     nudgeRepeatTimer = setTimeout(showNudge, 120000);
   }
 
-  function submitForm(e) {
-    e.preventDefault();
-    
-    // 1. Run your existing validation checks
-    const inputs = Array.from(document.querySelectorAll('#contactForm .form-control[required]'));
-    let allValid = true;
-    inputs.forEach(input => { if (!validateField(input)) allValid = false; });
-
-    const banner = document.getElementById('validationBanner');
-    if (!allValid) {
-      if(banner) banner.classList.add('show');
-      const firstErr = document.querySelector('#contactForm .form-control.error');
-      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if(banner) banner.classList.remove('show');
-
-    // 2. Change button state to let the user know it is processing
-    const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '⏳ Sending...'; 
-    btn.disabled = true;
-
-    // 3. Build the data package to send to your EmailJS Template
-    let parms = {
-      firstName: document.getElementById("contact_firstName").value,
-      lastName: document.getElementById("contact_lastName").value,
-      email: document.getElementById("contact_email").value,
-      phone: document.getElementById("contact_phone").value,
-      service: document.querySelector('input[name="svc"]:checked').value,
-      experience: document.getElementById("contact_experience").value,
-      domain: document.getElementById("contact_domain").value,
-      message: document.getElementById("contact_message").value
-    };
-
-    // 4. Send the email using EmailJS
-    emailjs.send("service_w8xypg7", "template_l2tp59i", parms)
-      .then(function(res) {
-        // SUCCESS: Hide the form and show your success message
-        document.getElementById('formContent').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-      })
-      .catch(function(err) {
-        // ERROR: If something goes wrong, reset the button and alert the user
-        console.error("EmailJS Error:", err);
-        btn.innerHTML = 'Send Message &nbsp;↗';
-        btn.disabled = false;
-        alert("Oops! Something went wrong sending your message. Please check your connection and try again.");
-      });
-  }
   setTimeout(showNudge, 30000);
 </script>
 </body>

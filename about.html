@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* ── ABOUT PAGE ── */
+    /* ── ABOUT PAGE STYLES ── */
     .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .story-visual {
       border-radius: var(--r-xl); min-height: 440px;
@@ -26,6 +26,7 @@
     .sb-num { font-family: 'Inter Tight',sans-serif; font-size: 24px; font-weight: 900; color: var(--blue); }
     .sb-num.red { color: var(--red); }
     .sb-lbl { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+    
     /* Patriotic stripe at visual bottom */
     .story-stripe { position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #fff 0 33%, var(--red-light) 33% 66%, #fff 66% 100%); }
 
@@ -77,438 +78,453 @@
 </head>
 <body>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="callbackModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('callbackModal')">&times;</button>
-    <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
-    <div class="modal-title">Request a Callback</div>
-    <p class="modal-sub">Leave your number and we'll call you back within 2 hours.</p>
-    <form onsubmit="handleModal(event,'callbackModal')">
-      <div class="form-row">
-        <div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" class="form-control" placeholder="John" required></div>
-        <div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" class="form-control" placeholder="Doe" required></div>
-      </div>
-      <div class="form-group"><label for="cb_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="cb_phone" class="form-control" placeholder="+1 (555) 000-0000" required></div>
-      <div class="form-group"><label for="cb_time">Best Time to Call <span style="color:var(--red)">*</span></label>
-        <select id="cb_time" class="form-control form-control-select" required>
-          <option value="">Select best time...</option>
-          <option value="Morning">Morning (9AM–12PM CST)</option>
-          <option value="Afternoon">Afternoon (12PM–4PM CST)</option>
-          <option value="Evening">Evening (4PM–6PM CST)</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
-    </form>
-  </div>
-</div>
-<div class="modal-overlay" id="bookModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('bookModal')">&times;</button>
-    <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
-    <div class="modal-title">Book Your Free Session</div>
-    <p class="modal-sub">Schedule a free 30-min consultation. No commitment required.</p>
-    <form onsubmit="handleModal(event,'bookModal')">
-      <div class="form-row">
-        <div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" class="form-control" placeholder="John" required></div>
-        <div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" class="form-control" placeholder="Doe" required></div>
-      </div>
-      <div class="form-group"><label for="bm_email">Email Address <span style="color:var(--red)">*</span></label><input type="email" id="bm_email" class="form-control" placeholder="john@example.com" required></div>
-      <div class="form-group"><label for="bm_service">I'm Interested In <span style="color:var(--red)">*</span></label>
-        <select id="bm_service" class="form-control form-control-select" required>
-          <option value="">Select service...</option>
-          <option value="Career Placement">Career Placement</option>
-          <option value="Training & Mentorship">Training &amp; Mentorship</option>
-          <option value="Resume & Interview Prep">Resume &amp; Interview Prep</option>
-          <option value="Recruitment Solutions">Recruitment Solutions</option>
-        </select>
-      </div>
-      <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" class="form-control" required></div>
-      <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
-    </form>
-  </div>
-</div>
-
-<!-- LOADING SCREEN -->
-<div id="loadingScreen">
-  <div class="loader-wrap">
-    <img class="loader-logo-img" src="images/logo.png" alt="AshishTek" onerror="this.style.display='none'">
-    <div class="loader-ring"></div>
-    <div class="loader-ring-2"></div>
-    <div class="loader-ring-3"></div>
-  </div>
-  <div class="loader-brand">Ashish<span>Tek</span></div>
-  <div class="loader-dots">
-    <div class="loader-dot"></div>
-    <div class="loader-dot"></div>
-    <div class="loader-dot"></div>
-  </div>
-</div>
-
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <div class="container">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-brand" title="AshishTek — Home">
-        <img src="images/logo.png" alt="AshishTek" class="nav-logo" onerror="this.outerHTML='<div class=nav-logo-fallback>A</div>'">
-        <div class="nav-brand-text">
-          <span class="nav-brand-name">Ashish<span class="accent-red">Tek</span></span>
-          <span class="nav-brand-sub">Connecting Talent to Tech</span>
+  <!-- MODALS -->
+  <div class="modal-overlay" id="callbackModal" aria-hidden="true" role="dialog">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('callbackModal')" aria-label="Close modal">&times;</button>
+      <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
+      <div class="modal-title">Request a Callback</div>
+      <p class="modal-sub">Leave your number and we'll call you back within 2 hours.</p>
+      <form onsubmit="handleModal(event,'callbackModal')">
+        <div class="form-row">
+          <div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" class="form-control" placeholder="John" required></div>
+          <div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" class="form-control" placeholder="Doe" required></div>
         </div>
-      </a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html" class="active">About Us</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="resume.html" style="color:var(--red);font-weight:700">📄 Resume Check</a></li>
-      </ul>
-      <div class="nav-actions">
-        <button class="nav-callback-btn" onclick="openModal('callbackModal')">📞 Request Callback</button>
-        <button class="nav-book-btn" onclick="openModal('bookModal')">Book Free Session ↗</button>
-      </div>
-      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</nav>
-<div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div><div class="mobile-nav" id="mobileNav">
-  <button class="mobile-close" id="mobileClose">&times;</button>
-  <a href="index.html" onclick="closeMobile()">Home</a>
-  <a href="about.html" onclick="closeMobile()">About Us</a>
-  <a href="services.html" onclick="closeMobile()">Services</a>
-  <a href="contact.html" onclick="closeMobile()">Contact</a>
-  <a href="resume.html" onclick="closeMobile()" style="color:var(--red);font-weight:700">📄 Resume Check</a>
-  <button class="btn btn-red" onclick="openModal('callbackModal');closeMobile()">📞 Request Callback</button>
-  <button class="btn btn-blue" onclick="openModal('bookModal');closeMobile()">Book Free Session ↗</button>
-</div>
-
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-bg"></div>
-  <div class="container">
-    <div class="page-hero-content">
-      <div class="tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff"><span class="tag-dot" style="background:#fff"></span> Our Story</div>
-      <h1>Built on American<br>Values &amp; Vision</h1>
-      <p>AshishTek was founded with one belief — that every passionate professional deserves a shot at a meaningful tech career in America.</p>
-      <div class="page-breadcrumb"><a href="index.html">Home</a><span>›</span><span>About Us</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- MISSION BANNER -->
-<div class="mission-banner">
-  <p class="mission-quote reveal">&ldquo;We believe every passionate individual deserves the opportunity to thrive in America's technology sector — regardless of where they start.&rdquo;</p>
-  <p class="mission-attr reveal" style="transition-delay:.15s">— AshishTek Mission Statement</p>
-</div>
-
-<!-- OUR STORY -->
-<section class="section section-white">
-  <div class="container">
-    <div class="story-grid">
-      <div class="story-visual reveal-left">
-        <div class="story-visual-inner">
-          <img class="story-logo" src="images/logo.png" alt="AshishTek" onerror="this.outerHTML='<div style=\'font-size:96px\'>🌐</div>'">
-          <div class="story-logo-label">AshishTek — Florida, USA</div>
+        <div class="form-group"><label for="cb_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="cb_phone" class="form-control" placeholder="+1 (555) 000-0000" required></div>
+        <div class="form-group"><label for="cb_time">Best Time to Call <span style="color:var(--red)">*</span></label>
+          <select id="cb_time" class="form-control form-control-select" required>
+            <option value="">Select best time...</option>
+            <option value="Morning">Morning (9AM–12PM CST)</option>
+            <option value="Afternoon">Afternoon (12PM–4PM CST)</option>
+            <option value="Evening">Evening (4PM–6PM CST)</option>
+          </select>
         </div>
-        <div class="story-badge story-badge-1">
-          <div class="sb-num">200+</div>
-          <div class="sb-lbl">Careers Launched</div>
+        <button type="submit" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="bookModal" aria-hidden="true" role="dialog">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('bookModal')" aria-label="Close modal">&times;</button>
+      <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
+      <div class="modal-title">Book Your Free Session</div>
+      <p class="modal-sub">Schedule a free 30-min consultation. No commitment required.</p>
+      <form onsubmit="handleModal(event,'bookModal')">
+        <div class="form-row">
+          <div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" class="form-control" placeholder="John" required></div>
+          <div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" class="form-control" placeholder="Doe" required></div>
         </div>
-        <div class="story-badge story-badge-2">
-          <div class="sb-num red">95%</div>
-          <div class="sb-lbl">Success Rate</div>
+        <div class="form-group"><label for="bm_email">Email Address <span style="color:var(--red)">*</span></label><input type="email" id="bm_email" class="form-control" placeholder="john@example.com" required></div>
+        <div class="form-group"><label for="bm_service">I'm Interested In <span style="color:var(--red)">*</span></label>
+          <select id="bm_service" class="form-control form-control-select" required>
+            <option value="">Select service...</option>
+            <option value="Career Placement">Career Placement</option>
+            <option value="Training & Mentorship">Training &amp; Mentorship</option>
+            <option value="Resume & Interview Prep">Resume &amp; Interview Prep</option>
+            <option value="Recruitment Solutions">Recruitment Solutions</option>
+          </select>
         </div>
-        <div class="story-stripe"></div>
-      </div>
-      <div class="reveal-right">
-        <div class="tag"><span class="tag-dot"></span> Who We Are</div>
-        <h2 class="section-title" style="text-align:left;margin-top:12px">Your Partner in<br>Tech Career Growth</h2>
-        <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">AshishTek is a Florida-based career services and recruitment firm laser-focused on the US technology sector. Founded on the American values of hard work, opportunity, and excellence — we exist to close the gap between raw talent and real opportunity.</p>
-        <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">Over the years we've built a trusted network of 200+ employer partners and have successfully placed hundreds of professionals into meaningful, high-paying tech careers across the United States.</p>
-        <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">We don't just place candidates — we transform careers. From the first training session to final onboarding, we are with you every step of the way.</p>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:32px">
-          <button class="btn btn-blue" onclick="openModal('bookModal')" style="cursor:pointer">Book Free Session ↗</button>
-          <a href="services.html" class="btn btn-ghost">Our Services</a>
-        </div>
-      </div>
+        <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" class="form-control" required></div>
+        <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
+      </form>
     </div>
   </div>
-</section>
 
-<!-- STATS -->
-<section class="section section-bg" style="padding:60px 0">
-  <div class="container">
-    <div class="stats-blocks">
-      <div class="sb reveal"><div class="sb-n">200+</div><div class="sb-l">Professionals Placed</div></div>
-      <div class="sb reveal" style="transition-delay:.1s"><div class="sb-n red">95%</div><div class="sb-l">Placement Rate</div></div>
-      <div class="sb reveal" style="transition-delay:.2s"><div class="sb-n">200+</div><div class="sb-l">Employer Partners</div></div>
-      <div class="sb reveal" style="transition-delay:.3s"><div class="sb-n red">5+</div><div class="sb-l">Years of Excellence</div></div>
+  <!-- LOADING SCREEN -->
+  <div id="loadingScreen">
+    <div class="loader-wrap">
+      <img class="loader-logo-img" src="images/logo.png" alt="AshishTek" onerror="this.style.display='none'">
+      <div class="loader-ring"></div>
+      <div class="loader-ring-2"></div>
+      <div class="loader-ring-3"></div>
+    </div>
+    <div class="loader-brand">Ashish<span>Tek</span></div>
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
     </div>
   </div>
-</section>
 
-<!-- VALUES -->
-<section class="section section-white">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag"><span class="tag-dot"></span> Our Values</div>
-      <h2 class="section-title">The Pillars That Define Us</h2>
-      <p class="section-sub">Every decision we make is guided by these core principles reflecting the best of American work ethic.</p>
-    </div>
-    <div class="values-grid">
-      <div class="value-card reveal"><span class="value-icon">🎖️</span><h3 class="value-title">Integrity First</h3><p class="value-text">We build lasting relationships through honesty, transparency, and commitment to doing what's right for candidates and employers alike.</p></div>
-      <div class="value-card reveal" style="transition-delay:.1s"><span class="value-icon">🎯</span><h3 class="value-title">Excellence in Execution</h3><p class="value-text">Good enough is never our standard. We obsess over quality in every resume, training session, and placement we make.</p></div>
-      <div class="value-card reveal" style="transition-delay:.2s"><span class="value-icon">🤝</span><h3 class="value-title">People First</h3><p class="value-text">Behind every placement is a person with dreams and goals. We treat every candidate as an individual, not a profile.</p></div>
-      <div class="value-card reveal" style="transition-delay:.3s"><span class="value-icon">📈</span><h3 class="value-title">Continuous Growth</h3><p class="value-text">The tech landscape never stops evolving — and neither do we. We constantly update programs to reflect market realities.</p></div>
-      <div class="value-card reveal" style="transition-delay:.35s"><span class="value-icon">🌐</span><h3 class="value-title">Opportunity for All</h3><p class="value-text">Tech careers should be accessible to everyone — regardless of background, education, or prior experience level.</p></div>
-      <div class="value-card reveal" style="transition-delay:.4s"><span class="value-icon">🇺🇸</span><h3 class="value-title">American Excellence</h3><p class="value-text">Rooted in Florida, reaching across the nation. We're proud to serve the US tech ecosystem and uphold the values that make it world-class.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- LEADERSHIP (TEMPORARILY HIDDEN) -->
-<!--
-<section class="section section-bg">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag tag-red"><span class="tag-dot"></span> Leadership</div>
-      <h2 class="section-title">The Team Behind Your Success</h2>
-      <p class="section-sub">Our leadership team brings decades of combined experience in technology, recruitment, and career development.</p>
-    </div>
-    <div class="team-grid" id="teamGrid">
-      <div class="team-card" style="transition-delay:0s">
-        <div class="team-avatar">AK</div>
-        <div class="team-name">Mitul Dholakiya</div>
-        <div class="team-role">Founder &amp; CEO</div>
-        <p class="team-bio">15+ years in US tech recruitment. Former talent director at Fortune 500 firms. Founded AshishTek to democratize access to tech careers.</p>
-      </div>
-      <div class="team-card" style="transition-delay:.12s">
-        <div class="team-avatar red">PR</div>
-        <div class="team-name">Priya Reddy</div>
-        <div class="team-role">Head of Training</div>
-        <p class="team-bio">Ex-Google data engineer turned educator. Built our curriculum from the ground up to reflect real-world industry demands.</p>
-      </div>
-      <div class="team-card" style="transition-delay:.24s">
-        <div class="team-avatar">MS</div>
-        <div class="team-name">Michael Shah</div>
-        <div class="team-role">Director of Placement</div>
-        <p class="team-bio">Manages employer partner relationships across 15 US states, ensuring candidates access the best opportunities available.</p>
-      </div>
-      <div class="team-card" style="transition-delay:.36s">
-        <div class="team-avatar red">SV</div>
-        <div class="team-name">Sunita Verma</div>
-        <div class="team-role">Career Success Lead</div>
-        <p class="team-bio">Oversees resume coaching, mock interviews, and post-placement support for every professional we serve.</p>
-      </div>
-    </div>
-  </div>
-</section>
--->
-
-<!-- TIMELINE (TEMPORARILY HIDDEN) -->
-<!--
-<section class="section section-white">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag"><span class="tag-dot"></span> Our Journey</div>
-      <h2 class="section-title">Milestones That Shaped AshishTek</h2>
-    </div>
-    <div class="timeline">
-      <div class="tl-item reveal">
-        <div class="tl-dot">20</div>
-        <div class="tl-content"><div class="tl-year">2020 — Founded</div><div class="tl-title">AshishTek Established in Florida</div><p class="tl-text">Founded with a mission to connect US tech professionals with meaningful career opportunities, starting with a passionate team of 3.</p></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-dot red">21</div>
-        <div class="tl-content"><div class="tl-year">2021 — Growth</div><div class="tl-title">First 100 Placements Achieved</div><p class="tl-text">Within 12 months, we successfully placed 100 tech professionals across Data Analysis, DevOps, and Business Analysis roles.</p></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-dot">22</div>
-        <div class="tl-content"><div class="tl-year">2022 — Expansion</div><div class="tl-title">Training Programs Launched</div><p class="tl-text">We launched flagship training programs, empowering candidates with no prior experience to break into high-demand tech roles.</p></div>
-      </div>
-      <div class="tl-item reveal">
-        <div class="tl-dot red">25</div>
-        <div class="tl-content"><div class="tl-year">2025 — Milestone</div><div class="tl-title">500+ Placements &amp; 200+ Partners</div><p class="tl-text">We crossed 500 successful placements with a 95% placement rate — a testament to our commitment to candidate success.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
--->
-
-<!-- CTA -->
-<section class="section section-blue-bg">
-  <div class="container">
-    <div class="cta-strip reveal">
-      <h2>Join the AshishTek Success Story</h2>
-      <p>Hundreds of tech professionals across America have transformed their careers with us. You could be next.</p>
-      <div class="btn-row">
-        <button class="btn btn-outline-white" onclick="openModal('bookModal')" style="cursor:pointer">📅 Book Free Consultation ↗</button>
-        <button class="btn" style="background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.4);cursor:pointer" onclick="openModal('callbackModal')">📞 Request Callback</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-main-grid">
-      <!-- Left Column -->
-      <div class="footer-brand-col">
-        <a href="index.html" class="footer-brand-header" title="AshishTek - Home">
-          <img src="images/logo.png" alt="AshishTek" class="footer-logo" onerror="this.style.display='none'">
-          <span class="footer-brand-name">Ashish<span class="r">Tek</span></span>
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand" title="AshishTek — Home">
+          <img src="images/logo.png" alt="AshishTek" class="nav-logo" onerror="this.outerHTML='<div class=nav-logo-fallback>A</div>'">
+          <div class="nav-brand-text">
+            <span class="nav-brand-name">Ashish<span class="accent-red">Tek</span></span>
+            <span class="nav-brand-sub">Connecting Talent to Tech</span>
+          </div>
         </a>
-        <p class="footer-tagline">Where Passion Meets Next-Gen Technologies. Empowering tech professionals across America.</p>
-        <a href="contact.html" class="footer-contact-btn">Contact Us &rarr;</a>
-        <div class="footer-everify-wrap">
-          <img src="images/E-Verify_logo.svg.webp" alt="E-Verify" class="footer-everify-logo">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html" class="active">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="resume.html" style="color:var(--red);font-weight:700">📄 Resume Check</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-callback-btn" onclick="openModal('callbackModal')">📞 Request Callback</button>
+          <button class="nav-book-btn" onclick="openModal('bookModal')">Book Free Session ↗</button>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAVIGATION OVERLAY -->
+  <div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-close" id="mobileClose" onclick="closeMobile()" aria-label="Close menu">&times;</button>
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="about.html" onclick="closeMobile()">About Us</a>
+    <a href="services.html" onclick="closeMobile()">Services</a>
+    <a href="contact.html" onclick="closeMobile()">Contact</a>
+    <a href="resume.html" onclick="closeMobile()" style="color:var(--red);font-weight:700">📄 Resume Check</a>
+    <button class="btn btn-red" onclick="openModal('callbackModal');closeMobile()">📞 Request Callback</button>
+    <button class="btn btn-blue" onclick="openModal('bookModal');closeMobile()">Book Free Session ↗</button>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="page-hero-content">
+        <div class="tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff"><span class="tag-dot" style="background:#fff"></span> Our Story</div>
+        <h1>Built on American<br>Values &amp; Vision</h1>
+        <p>AshishTek was founded with one belief — that every passionate professional deserves a shot at a meaningful tech career in America.</p>
+        <div class="page-breadcrumb"><a href="index.html">Home</a><span>›</span><span>About Us</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION BANNER -->
+  <div class="mission-banner">
+    <p class="mission-quote reveal">&ldquo;We believe every passionate individual deserves the opportunity to thrive in America's technology sector — regardless of where they start.&rdquo;</p>
+    <p class="mission-attr reveal" style="transition-delay:.15s">— AshishTek Mission Statement</p>
+  </div>
+
+  <!-- OUR STORY -->
+  <section class="section section-white">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-visual reveal-left">
+          <div class="story-visual-inner">
+            <img class="story-logo" src="images/logo.png" alt="AshishTek" onerror="this.outerHTML='<div style=\'font-size:96px\'>🌐</div>'">
+            <div class="story-logo-label">AshishTek — Florida, USA</div>
+          </div>
+          <div class="story-badge story-badge-1">
+            <div class="sb-num">200+</div>
+            <div class="sb-lbl">Careers Launched</div>
+          </div>
+          <div class="story-badge story-badge-2">
+            <div class="sb-num red">95%</div>
+            <div class="sb-lbl">Success Rate</div>
+          </div>
+          <div class="story-stripe"></div>
+        </div>
+        <div class="reveal-right">
+          <div class="tag"><span class="tag-dot"></span> Who We Are</div>
+          <h2 class="section-title" style="text-align:left;margin-top:12px">Your Partner in<br>Tech Career Growth</h2>
+          <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">AshishTek is a Florida-based career services and recruitment firm laser-focused on the US technology sector. Founded on the American values of hard work, opportunity, and excellence — we exist to close the gap between raw talent and real opportunity.</p>
+          <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">Over the years we've built a trusted network of 200+ employer partners and have successfully placed hundreds of professionals into meaningful, high-paying tech careers across the United States.</p>
+          <p style="font-size:16px;color:var(--text-3);line-height:1.8;margin-top:14px">We don't just place candidates — we transform careers. From the first training session to final onboarding, we are with you every step of the way.</p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:32px">
+            <button class="btn btn-blue" onclick="openModal('bookModal')" style="cursor:pointer">Book Free Session ↗</button>
+            <a href="services.html" class="btn btn-ghost">Our Services</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="section section-bg" style="padding:60px 0">
+    <div class="container">
+      <div class="stats-blocks">
+        <div class="sb reveal"><div class="sb-n">200+</div><div class="sb-l">Professionals Placed</div></div>
+        <div class="sb reveal" style="transition-delay:.1s"><div class="sb-n red">95%</div><div class="sb-l">Placement Rate</div></div>
+        <div class="sb reveal" style="transition-delay:.2s"><div class="sb-n">200+</div><div class="sb-l">Employer Partners</div></div>
+        <div class="sb reveal" style="transition-delay:.3s"><div class="sb-n red">5+</div><div class="sb-l">Years of Excellence</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag"><span class="tag-dot"></span> Our Values</div>
+        <h2 class="section-title">The Pillars That Define Us</h2>
+        <p class="section-sub">Every decision we make is guided by these core principles reflecting the best of American work ethic.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card reveal"><span class="value-icon">🎖️</span><h3 class="value-title">Integrity First</h3><p class="value-text">We build lasting relationships through honesty, transparency, and commitment to doing what's right for candidates and employers alike.</p></div>
+        <div class="value-card reveal" style="transition-delay:.1s"><span class="value-icon">🎯</span><h3 class="value-title">Excellence in Execution</h3><p class="value-text">Good enough is never our standard. We obsess over quality in every resume, training session, and placement we make.</p></div>
+        <div class="value-card reveal" style="transition-delay:.2s"><span class="value-icon">🤝</span><h3 class="value-title">People First</h3><p class="value-text">Behind every placement is a person with dreams and goals. We treat every candidate as an individual, not a profile.</p></div>
+        <div class="value-card reveal" style="transition-delay:.3s"><span class="value-icon">📈</span><h3 class="value-title">Continuous Growth</h3><p class="value-text">The tech landscape never stops evolving — and neither do we. We constantly update programs to reflect market realities.</p></div>
+        <div class="value-card reveal" style="transition-delay:.35s"><span class="value-icon">🌐</span><h3 class="value-title">Opportunity for All</h3><p class="value-text">Tech careers should be accessible to everyone — regardless of background, education, or prior experience level.</p></div>
+        <div class="value-card reveal" style="transition-delay:.4s"><span class="value-icon">🇺🇸</span><h3 class="value-title">American Excellence</h3><p class="value-text">Rooted in Florida, reaching across the nation. We're proud to serve the US tech ecosystem and uphold the values that make it world-class.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-blue-bg">
+    <div class="container">
+      <div class="cta-strip reveal">
+        <h2>Join the AshishTek Success Story</h2>
+        <p>Hundreds of tech professionals across America have transformed their careers with us. You could be next.</p>
+        <div class="btn-row">
+          <button class="btn btn-outline-white" onclick="openModal('bookModal')" style="cursor:pointer">📅 Book Free Consultation ↗</button>
+          <button class="btn" style="background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.4);cursor:pointer" onclick="openModal('callbackModal')">📞 Request Callback</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-main-grid">
+        <div class="footer-brand-col">
+          <a href="index.html" class="footer-brand-header" title="AshishTek - Home">
+            <img src="images/logo.png" alt="AshishTek" class="footer-logo" onerror="this.style.display='none'">
+            <span class="footer-brand-name">Ashish<span class="r">Tek</span></span>
+          </a>
+          <p class="footer-tagline">Where Passion Meets Next-Gen Technologies. Empowering tech professionals across America.</p>
+          <a href="contact.html" class="footer-contact-btn">Contact Us &rarr;</a>
+          <div class="footer-everify-wrap">
+            <img src="images/E-Verify_logo.svg.webp" alt="E-Verify" class="footer-everify-logo">
+          </div>
+        </div>
+
+        <div class="footer-nav-col">
+          <div class="footer-links-grid">
+            <div>
+              <div class="footer-col-title">Home</div>
+              <ul class="footer-links-list">
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="resume.html">Careers</a></li>
+                <li><a href="contact.html">Refer &amp; Earn</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="footer-col-title">Other</div>
+              <ul class="footer-links-list">
+                <li><a href="about.html">Privacy Policy</a></li>
+                <li><a href="about.html">Terms and Conditions</a></li>
+                <li><a href="services.html">Partner Company</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="footer-col-title">Contact</div>
+              <ul class="footer-links-list">
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html#faq">FAQ's</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-address-block">
+            <div class="footer-address-title">Address</div>
+            <div class="footer-address-text">Florida, United States</div>
+          </div>
         </div>
       </div>
 
-      <!-- Right Column -->
-      <div class="footer-nav-col">
-        <div class="footer-links-grid">
-          <div>
-            <div class="footer-col-title">Home</div>
-            <ul class="footer-links-list">
-              <li><a href="about.html">About</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="resume.html">Careers</a></li>
-              <li><a href="contact.html">Refer &amp; Earn</a></li>
-            </ul>
-          </div>
-          <div>
-            <div class="footer-col-title">Other</div>
-            <ul class="footer-links-list">
-              <li><a href="about.html">Privacy Policy</a></li>
-              <li><a href="about.html">Terms and Conditions</a></li>
-              <li><a href="services.html">Partner Company</a></li>
-            </ul>
-          </div>
-          <div>
-            <div class="footer-col-title">Contact</div>
-            <ul class="footer-links-list">
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="contact.html#faq">FAQ's</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="footer-address-block">
-          <div class="footer-address-title">Address</div>
-          <div class="footer-address-text">Florida, United States</div>
-        </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">@2025, All Rights Reserved</div>
+        <a href="contact.html" class="footer-refer-btn">🎁 Refer &amp; Earn</a>
       </div>
     </div>
+    <div class="footer-stripe"></div>
+  </footer>
 
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <div class="footer-copy">@2025, All Rights Reserved</div>
-      <a href="contact.html" class="footer-refer-btn">🎁 Refer &amp; Earn</a>
+  <div id="cursorDot"></div>
+  <div id="toast">✅ Request submitted! We'll be in touch soon.</div>
+
+  <!-- CENTERED AD POPUP -->
+  <div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
+  <div class="center-nudge" id="autoNudge">
+    <div class="center-nudge-header">
+      <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
+      <div class="center-nudge-eyebrow">🔥 Limited Free Slots Available</div>
+      <div class="center-nudge-title">Launch Your Tech Career with AshishTek</div>
+      <div class="center-nudge-sub">Florida-based · 200+ professionals placed · 95% success rate</div>
     </div>
-  </div>
-  <div class="footer-stripe"></div>
-</footer>
-<div id="cursorDot"></div>
-<div id="toast">✅ Request submitted! We'll be in touch soon.</div>
-
-<!-- CENTERED AD POPUP -->
-<div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
-<div class="center-nudge" id="autoNudge">
-  <div class="center-nudge-header">
-    <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
-    <div class="center-nudge-eyebrow">🔥 Limited Free Slots Available</div>
-    <div class="center-nudge-title">Launch Your Tech Career with AshishTek</div>
-    <div class="center-nudge-sub">Florida-based · 200+ professionals placed · 95% success rate</div>
-  </div>
-  <div class="center-nudge-body">
-    <div class="center-nudge-perks">
-      <div class="cnp-item"><div class="cnp-icon">📅</div>Free 30-min career consultation — no strings attached</div>
-      <div class="cnp-item"><div class="cnp-icon">🎯</div>Personalized roadmap to your target tech role</div>
-      <div class="cnp-item"><div class="cnp-icon">🤝</div>Access to 200+ employer partners across the US</div>
-      <div class="cnp-item"><div class="cnp-icon">📞</div>Get a callback from a specialist within 2 hours</div>
+    <div class="center-nudge-body">
+      <div class="center-nudge-perks">
+        <div class="cnp-item"><div class="cnp-icon">📅</div>Free 30-min career consultation — no strings attached</div>
+        <div class="cnp-item"><div class="cnp-icon">🎯</div>Personalized roadmap to your target tech role</div>
+        <div class="cnp-item"><div class="cnp-icon">🤝</div>Access to 200+ employer partners across the US</div>
+        <div class="cnp-item"><div class="cnp-icon">📞</div>Get a callback from a specialist within 2 hours</div>
+      </div>
+      <div class="center-nudge-btns">
+        <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Consultation</button>
+        <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Request Callback</button>
+      </div>
+      <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
     </div>
-    <div class="center-nudge-btns">
-      <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Consultation</button>
-      <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Request Callback</button>
-    </div>
-    <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
+    <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
   </div>
-  <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
-</div>
 
-<script>
-  // Loading screen
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('loadingScreen');
-    setTimeout(() => {
-      loader.classList.add('fade-out');
-      setTimeout(() => { loader.style.display = 'none'; }, 650);
-    }, 1600);
-  });
-
-  // Cursor Follower Dot
-  const cdot = document.getElementById('cursorDot');
-  if (cdot) { let cx=window.innerWidth/2,cy=window.innerHeight/2,dx=cx,dy=cy; document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY}); document.addEventListener('mousedown',()=>cdot.classList.add('clicking')); document.addEventListener('mouseup',()=>cdot.classList.remove('clicking')); (function animateDot(){dx+=(cx-dx)*.14;dy+=(cy-dy)*.14;cdot.style.left=dx+'px';cdot.style.top=dy+'px';requestAnimationFrame(animateDot)})(); }
-
-  // Mobile menu
-  document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('mobileNav').classList.add('open'); document.getElementById('mobileBackdrop').classList.add('open'); });
-  document.getElementById('mobileClose').addEventListener('click', () => { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); });
-  function closeMobile() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); }
-
-  // Scroll reveal
-  const ro = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); ro.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ro.observe(el));
-
-  // Team cards stagger animation
-  const teamRo = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        teamRo.unobserve(e.target);
+  <script>
+    // Loading Screen
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loadingScreen');
+      if (loader) {
+        setTimeout(() => {
+          loader.classList.add('fade-out');
+          setTimeout(() => { loader.style.display = 'none'; }, 650);
+        }, 1600);
       }
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.team-card').forEach(c => teamRo.observe(c));
 
-  // Modals
-  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
-  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) closeModal(m.id); }));
-  document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); });
+    // Cursor Follower Dot
+    const cdot = document.getElementById('cursorDot');
+    if (cdot) { 
+      let cx = window.innerWidth / 2, cy = window.innerHeight / 2, dx = cx, dy = cy; 
+      document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; }); 
+      document.addEventListener('mousedown', () => cdot.classList.add('clicking')); 
+      document.addEventListener('mouseup', () => cdot.classList.remove('clicking')); 
+      (function animateDot() { 
+        dx += (cx - dx) * 0.14; 
+        dy += (cy - dy) * 0.14; 
+        cdot.style.left = dx + 'px'; 
+        cdot.style.top = dy + 'px'; 
+        requestAnimationFrame(animateDot); 
+      })(); 
+    }
 
-  function handleModal(e, id) {
-    e.preventDefault();
-    closeModal(id);
-    showToast('✅ Request submitted! We\'ll be in touch soon.');
-  }
+    // Mobile Navigation Controls
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const mobileClose = document.getElementById('mobileClose');
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
-    setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 4000);
-  }
+    if (hamburger && mobileNav && mobileBackdrop) {
+      hamburger.addEventListener('click', () => { 
+        mobileNav.classList.add('open'); 
+        mobileBackdrop.classList.add('open'); 
+      });
+    }
 
-  // Centered Ad Popup — repeats every 20 seconds after dismiss
-  let nudgeRepeatTimer = null;
-  function showNudge() {
-    const fill = document.getElementById('nudgeTimerFill');
-    if (fill) { fill.style.animation='none'; fill.offsetHeight; fill.style.animation=''; }
-    document.getElementById('autoNudge').classList.add('show');
-    document.getElementById('nudgeBackdrop').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-  function dismissNudge() {
-    document.getElementById('autoNudge').classList.remove('show');
-    document.getElementById('nudgeBackdrop').classList.remove('show');
-    document.body.style.overflow = '';
-    clearTimeout(nudgeRepeatTimer);
-    nudgeRepeatTimer = setTimeout(showNudge, 120000);
-  }
-  setTimeout(showNudge, 30000);
-</script>
+    if (mobileClose) {
+      mobileClose.addEventListener('click', closeMobile);
+    }
+
+    function closeMobile() { 
+      if (mobileNav && mobileBackdrop) {
+        mobileNav.classList.remove('open'); 
+        mobileBackdrop.classList.remove('open'); 
+      }
+    }
+
+    // Scroll Reveal Intersection Observer
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { 
+        if (e.isIntersecting) { 
+          e.target.classList.add('up'); 
+          ro.unobserve(e.target); 
+        } 
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => ro.observe(el));
+
+    // Team cards stagger animation
+    const teamRo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          teamRo.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.team-card').forEach(c => teamRo.observe(c));
+
+    // Modal Control Functions
+    function openModal(id) { 
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('open'); 
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; 
+      }
+    }
+
+    function closeModal(id) { 
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('open'); 
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; 
+      }
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+    });
+
+    document.addEventListener('keydown', e => { 
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); 
+      }
+    });
+
+    function handleModal(e, id) {
+      e.preventDefault();
+      closeModal(id);
+      showToast('✅ Request submitted! We\'ll be in touch soon.');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (t) {
+        t.textContent = msg; 
+        t.style.opacity = '1'; 
+        t.style.transform = 'translateX(-50%) translateY(0)';
+        setTimeout(() => { 
+          t.style.opacity = '0'; 
+          t.style.transform = 'translateX(-50%) translateY(20px)'; 
+        }, 4000);
+      }
+    }
+
+    // Centered Nudge / Ad Popup Control
+    let nudgeRepeatTimer = null;
+    function showNudge() {
+      const fill = document.getElementById('nudgeTimerFill');
+      const autoNudge = document.getElementById('autoNudge');
+      const nudgeBackdrop = document.getElementById('nudgeBackdrop');
+      
+      if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = ''; }
+      if (autoNudge && nudgeBackdrop) {
+        autoNudge.classList.add('show');
+        nudgeBackdrop.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function dismissNudge() {
+      const autoNudge = document.getElementById('autoNudge');
+      const nudgeBackdrop = document.getElementById('nudgeBackdrop');
+      
+      if (autoNudge && nudgeBackdrop) {
+        autoNudge.classList.remove('show');
+        nudgeBackdrop.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+      clearTimeout(nudgeRepeatTimer);
+      nudgeRepeatTimer = setTimeout(showNudge, 120000);
+    }
+
+    setTimeout(showNudge, 30000);
+  </script>
 </body>
 </html>
