@@ -1,0 +1,742 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Checker — AshishTek</title>
+  <meta name="description" content="Get your resume scored instantly by AshishTek's AI-powered checker. See what recruiters see and get actionable improvement tips.">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .modal { background:#fff !important; }
+
+    .page-hero { background: linear-gradient(135deg,#0D2B5E 0%,#1B5FAA 60%,#1e3a8a 100%); padding:120px 0 64px; text-align:center; }
+    .page-hero h1 { font-family:'Inter Tight',sans-serif; font-size:clamp(32px,5vw,56px); font-weight:900; color:#fff; letter-spacing:-.03em; margin-bottom:16px; }
+    .page-hero p { font-size:18px; color:rgba(255,255,255,.7); max-width:560px; margin:0 auto 32px; line-height:1.7; }
+    .page-hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:100px; padding:6px 16px; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.9); margin-bottom:24px; }
+
+    .resume-section { background:var(--bg); padding:72px 0; }
+    .resume-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+    @media(max-width:860px){ .resume-grid{grid-template-columns:1fr;} }
+
+    /* Upload zone */
+    .resume-upload-zone { border:2.5px dashed var(--blue-pale); border-radius:var(--r-xl); padding:56px 32px; text-align:center; cursor:pointer; transition:var(--ease); background:var(--surface-2); position:relative; }
+    .resume-upload-zone:hover,.resume-upload-zone.dragover { border-color:var(--blue); background:var(--blue-bg); }
+    .ruz-icon { font-size:52px; margin-bottom:16px; display:block; }
+    .ruz-title { font-family:'Manrope',sans-serif; font-size:20px; font-weight:700; color:var(--text-1); margin-bottom:8px; }
+    .ruz-sub { font-size:14px; color:var(--text-3); margin-bottom:20px; }
+    .ruz-formats { display:inline-flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+    .ruz-format { padding:4px 12px; background:var(--blue-bg); border:1px solid var(--blue-pale); border-radius:var(--r-pill); font-size:11px; font-weight:700; color:var(--blue); letter-spacing:.06em; }
+    #resumeFileInput { display:none; }
+    .ruz-btn { margin-top:24px; display:inline-flex; align-items:center; gap:8px; background:var(--blue); color:#fff; font-family:'Manrope',sans-serif; font-size:14px; font-weight:700; padding:12px 28px; border-radius:var(--r-pill); border:none; cursor:pointer; transition:var(--ease); }
+    .ruz-btn:hover { background:var(--blue-hover); }
+    .file-selected { margin-top:16px; padding:12px 16px; background:rgba(27,95,170,.08); border:1px solid var(--blue-pale); border-radius:var(--r-md); font-size:13px; color:var(--blue); font-weight:600; display:none; align-items:center; gap:8px; }
+    .file-selected.show { display:flex; }
+
+    /* Contact info fields */
+    .resume-meta { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:32px; box-shadow:var(--shadow-md); }
+    .resume-meta h3 { font-family:'Manrope',sans-serif; font-size:18px; font-weight:700; color:var(--text-1); margin-bottom:20px; }
+    .analyze-btn { width:100%; padding:15px; background:linear-gradient(135deg,var(--blue),#1e3a8a); color:#fff; font-family:'Manrope',sans-serif; font-size:15px; font-weight:700; border:none; border-radius:var(--r-md); cursor:pointer; transition:var(--ease); margin-top:8px; position:relative; overflow:hidden; }
+    .analyze-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(27,95,170,.35); }
+    .analyze-btn:disabled { opacity:.7; cursor:not-allowed; transform:none; }
+    .analyze-btn .btn-spinner { display:inline-block; width:16px; height:16px; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite; margin-right:8px; vertical-align:middle; }
+
+    /* Results */
+    .resume-score-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:40px; box-shadow:var(--shadow-lg); display:none; margin-top:40px; }
+    .resume-score-card.show { display:block; animation:fadeUp .5s ease both; }
+    .score-header { text-align:center; margin-bottom:36px; }
+    .score-circle-wrap { display:flex; justify-content:center; margin-bottom:20px; }
+    .score-circle { width:150px; height:150px; position:relative; }
+    .score-circle svg { width:100%; height:100%; transform:rotate(-90deg); }
+    .score-circle-bg { fill:none; stroke:var(--border); stroke-width:10; }
+    .score-circle-fill { fill:none; stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1); }
+    .score-circle-text { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .score-num { font-family:'Inter Tight',sans-serif; font-size:38px; font-weight:900; color:var(--text-1); line-height:1; }
+    .score-label { font-size:11px; color:var(--text-4); font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-top:2px; }
+    .score-grade { font-family:'Inter Tight',sans-serif; font-size:20px; font-weight:800; margin-top:8px; }
+    .score-grade.excellent { color:#16a34a; }
+    .score-grade.good { color:#2563eb; }
+    .score-grade.fair { color:#d97706; }
+    .score-grade.poor { color:#dc2626; }
+
+    .score-items { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+    .score-item { display:flex; align-items:center; gap:14px; padding:14px 16px; background:var(--surface-2); border-radius:var(--r-md); border:1px solid var(--border); }
+    .si-icon { font-size:20px; flex-shrink:0; }
+    .si-info { flex:1; }
+    .si-title { font-family:'Manrope',sans-serif; font-size:13px; font-weight:700; color:var(--text-1); margin-bottom:6px; }
+    .si-bar-wrap { height:7px; background:var(--border); border-radius:4px; overflow:hidden; }
+    .si-bar { height:100%; border-radius:4px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+    .si-score { font-size:13px; font-weight:700; color:var(--text-2); flex-shrink:0; min-width:36px; text-align:right; }
+
+    .resume-tips { background:var(--blue-bg); border:1px solid var(--blue-pale); border-radius:var(--r-lg); padding:24px; margin-top:24px; }
+    .resume-tips-title { font-family:'Manrope',sans-serif; font-size:15px; font-weight:700; color:var(--blue); margin-bottom:14px; }
+    .tip-item { display:flex; gap:10px; font-size:13px; color:var(--text-2); margin-bottom:10px; line-height:1.7; }
+    .tip-item:last-child { margin-bottom:0; }
+    .tip-arrow { color:var(--blue); font-weight:700; flex-shrink:0; }
+
+    .submit-resume-btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--red),#b91c1c); color:#fff; font-family:'Manrope',sans-serif; font-size:14px; font-weight:700; border:none; border-radius:var(--r-md); cursor:pointer; margin-top:20px; transition:var(--ease); }
+    .submit-resume-btn:hover { opacity:.9; transform:translateY(-2px); }
+
+    /* How it works */
+    .how-it-works { background:var(--surface-2); padding:72px 0; }
+    .hiw-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:48px; }
+    @media(max-width:700px){ .hiw-grid{grid-template-columns:1fr;} }
+    .hiw-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:32px; text-align:center; box-shadow:var(--shadow-md); }
+    .hiw-step { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--blue),#1e3a8a); color:#fff; font-family:'Inter Tight',sans-serif; font-size:20px; font-weight:900; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+    .hiw-title { font-family:'Manrope',sans-serif; font-size:16px; font-weight:700; color:var(--text-1); margin-bottom:8px; }
+    .hiw-sub { font-size:13px; color:var(--text-3); line-height:1.7; }
+
+    /* CTA strip */
+    .cta-strip { background:linear-gradient(135deg,#0D2B5E,var(--blue)); border-radius:var(--r-xl); padding:56px 48px; text-align:center; color:#fff; }
+    .cta-strip h2 { font-family:'Inter Tight',sans-serif; font-size:clamp(24px,4vw,38px); font-weight:900; color:#fff; margin-bottom:12px; }
+    .cta-strip p { color:rgba(255,255,255,.75); font-size:16px; margin-bottom:28px; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes spin { to{transform:rotate(360deg)} }
+  </style>
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      // Replace with your actual EmailJS Public Key
+      emailjs.init("YOUR_PUBLIC_KEY");
+    })();
+  </script>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-wrap">
+    <img class="loader-logo-img" src="images/logo.png" alt="AshishTek" onerror="this.style.display='none'">
+    <div class="loader-ring"></div>
+    <div class="loader-ring-2"></div>
+    <div class="loader-ring-3"></div>
+  </div>
+  <div class="loader-brand">Ashish<span>Tek</span></div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- MODALS (Callback + Book) -->
+<div class="modal-overlay" id="callbackModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-icon">📞</div><div><div class="modal-title">Request a Callback</div><div class="modal-sub">We'll call you within 2 business hours</div></div><button class="modal-close" onclick="closeModal('callbackModal')">✕</button></div>
+    <form id="callbackForm" onsubmit="handleCallbackSubmit(event)">
+      <div class="form-row"><div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" name="first_name" class="form-control" placeholder="John" required></div><div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" name="last_name" class="form-control" placeholder="Doe" required></div></div>
+      <div class="form-group"><label for="cb_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="cb_phone" name="phone" class="form-control" placeholder="+1 (555) 000-0000" required></div>
+      <div class="form-group"><label for="cb_time">Best Time to Call <span style="color:var(--red)">*</span></label><select id="cb_time" name="best_time" class="form-control form-control-select" required><option value="">Select best time...</option><option value="Morning">Morning (9am–12pm)</option><option value="Afternoon">Afternoon (12pm–4pm)</option><option value="Evening">Evening (4pm–7pm)</option></select></div>
+      <button type="submit" id="cb_submitBtn" class="btn btn-red btn-full" style="margin-top:6px">Request My Callback &nbsp;↗</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="bookModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-icon">📅</div><div><div class="modal-title">Book a Free Session</div><div class="modal-sub">30-min consultation with a tech career expert</div></div><button class="modal-close" onclick="closeModal('bookModal')">✕</button></div>
+    <form id="bookForm" onsubmit="handleBookSubmit(event)">
+      <div class="form-row"><div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" name="first_name" class="form-control" placeholder="Jane" required></div><div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" name="last_name" class="form-control" placeholder="Smith" required></div></div>
+      <div class="form-group"><label for="bm_email">Email Address <span style="color:var(--red)">*</span></label><input type="email" id="bm_email" name="email" class="form-control" placeholder="jane@email.com" required></div>
+      <div class="form-group"><label for="bm_service">Service Interest <span style="color:var(--red)">*</span></label><select id="bm_service" name="service" class="form-control form-control-select" required><option value="">Select service...</option><option value="Career Placement">Career Placement</option><option value="Training & Mentorship">Training &amp; Mentorship</option><option value="Resume & Interview Prep">Resume &amp; Interview Prep</option><option value="Recruitment Solutions">Recruitment Solutions</option></select></div>
+      <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" name="preferred_date" class="form-control" required></div>
+      <button type="submit" id="bm_submitBtn" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;→</button>
+    </form>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand" title="AshishTek — Home">
+        <img src="images/logo.png" alt="AshishTek Logo" class="nav-logo" onerror="this.outerHTML='<div class=nav-logo-fallback>A</div>'">
+        <div class="nav-brand-text">
+          <span class="nav-brand-name">Ashish<span class="accent-red">Tek</span></span>
+          <span class="nav-brand-sub">Connecting Talent to Tech</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="resume.html" class="active" style="color:var(--red);font-weight:700">📄 Resume Check</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-callback-btn" onclick="openModal('callbackModal')" style="cursor:pointer">📞 Request Callback</button>
+        <button class="nav-book-btn" onclick="openModal('bookModal')" style="cursor:pointer">Book Free Session ↗</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobile()"></div>
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">&times;</button>
+  <a href="index.html" onclick="closeMobile()">Home</a>
+  <a href="about.html" onclick="closeMobile()">About Us</a>
+  <a href="services.html" onclick="closeMobile()">Services</a>
+  <a href="contact.html" onclick="closeMobile()">Contact</a>
+  <a href="resume.html" onclick="closeMobile()" style="color:var(--red);font-weight:700">📄 Resume Check</a>
+  <button class="btn btn-red" onclick="openModal('callbackModal');closeMobile()">📞 Request Callback</button>
+  <button class="btn btn-blue" onclick="openModal('bookModal');closeMobile()">Book Free Session ↗</button>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge"><span>✨</span> AI-Powered Resume Analysis</div>
+    <h1>📄 Resume Checker</h1>
+    <p>Upload your resume and get an instant score with detailed feedback. See exactly what recruiters see — and what to fix.</p>
+  </div>
+</section>
+
+<!-- MAIN RESUME SECTION -->
+<section class="resume-section">
+  <div class="container">
+    <div class="resume-grid">
+
+      <!-- Left: Upload + Contact -->
+      <div>
+        <form id="resumeForm" onsubmit="handleResumeSubmit(event)">
+        <!-- Upload Zone -->
+        <div class="resume-upload-zone" id="uploadZone" onclick="document.getElementById('resumeFileInput').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <span class="ruz-icon">📋</span>
+          <div class="ruz-title">Drop your resume here</div>
+          <div class="ruz-sub">or click to browse your files</div>
+          <div class="ruz-formats">
+            <span class="ruz-format">PDF</span>
+            <span class="ruz-format">DOCX</span>
+            <span class="ruz-format">DOC</span>
+            <span class="ruz-format">TXT</span>
+          </div>
+          <button class="ruz-btn" onclick="event.stopPropagation();document.getElementById('resumeFileInput').click()">📂 Browse File</button>
+          <input type="file" id="resumeFileInput" name="resume_file" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect(event)" required>
+        </div>
+
+        <!-- File selected indicator -->
+        <div class="file-selected" id="fileSelected">
+          <span>📎</span>
+          <span id="selectedFileName">No file selected</span>
+        </div>
+
+        <!-- Contact info + submit -->
+        <div class="resume-meta" style="margin-top:24px">
+          <h3>📬 Your Contact Info</h3>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:20px;line-height:1.6">We'll save your result and may reach out with personalized career tips.</p>
+          <div class="form-row">
+            <div class="form-group"><label>Your Name <span style="color:var(--red)">*</span></label><input type="text" id="rName" name="name" class="form-control" placeholder="John Doe" required></div>
+            <div class="form-group"><label>Email <span style="color:var(--red)">*</span></label><input type="email" id="rEmail" name="email" class="form-control" placeholder="john@email.com" required></div>
+          </div>
+          <div class="form-group"><label>Phone (optional)</label><input type="tel" id="rPhone" name="phone" class="form-control" placeholder="+1 (555) 000-0000"></div>
+          <button type="submit" class="analyze-btn" id="analyzeBtn">🔍 Analyze My Resume</button>
+        </div>
+        </form>
+      </div>
+
+      <!-- Right: Score Results -->
+      <div>
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;text-align:center;margin-bottom:0" id="placeholderCard">
+          <div style="font-size:64px;margin-bottom:20px">🎯</div>
+          <div style="font-family:'Manrope',sans-serif;font-size:18px;font-weight:700;color:var(--text-1);margin-bottom:8px">Your Resume Score</div>
+          <div style="font-size:14px;color:var(--text-3);line-height:1.7">Upload your resume and fill in your contact details, then click <strong>Analyze</strong> to get your detailed score and personalized improvement tips.</div>
+          <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <div style="padding:10px 18px;background:var(--blue-bg);border:1px solid var(--blue-pale);border-radius:var(--r-md);font-size:13px;color:var(--blue);font-weight:600">✅ ATS Compatibility</div>
+            <div style="padding:10px 18px;background:var(--blue-bg);border:1px solid var(--blue-pale);border-radius:var(--r-md);font-size:13px;color:var(--blue);font-weight:600">📊 Section Analysis</div>
+            <div style="padding:10px 18px;background:var(--blue-bg);border:1px solid var(--blue-pale);border-radius:var(--r-md);font-size:13px;color:var(--blue);font-weight:600">🎯 Action Verbs</div>
+            <div style="padding:10px 18px;background:var(--blue-bg);border:1px solid var(--blue-pale);border-radius:var(--r-md);font-size:13px;color:var(--blue);font-weight:600">💡 Improvement Tips</div>
+          </div>
+        </div>
+
+        <div class="resume-score-card" id="scoreCard">
+          <div class="score-header">
+            <div class="score-circle-wrap">
+              <div class="score-circle">
+                <svg viewBox="0 0 100 100">
+                  <circle class="score-circle-bg" cx="50" cy="50" r="42"/>
+                  <circle class="score-circle-fill" id="scoreArc" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
+                </svg>
+                <div class="score-circle-text">
+                  <span class="score-num" id="scoreNum">0</span>
+                  <span class="score-label">/ 100</span>
+                </div>
+              </div>
+            </div>
+            <div class="score-grade" id="scoreGrade">Analyzing...</div>
+            <div style="font-size:13px;color:var(--text-3);margin-top:6px" id="scoreDesc"></div>
+          </div>
+
+          <div class="score-items" id="scoreItems"></div>
+
+          <div class="resume-tips" id="resumeTips">
+            <div class="resume-tips-title">💡 Top Improvement Tips</div>
+            <div id="tipsList"></div>
+          </div>
+
+          <button class="submit-resume-btn" id="submitResumeBtn" onclick="submitToSheets()">
+            📤 Save Results &amp; Get Expert Review
+          </button>
+          <p style="text-align:center;font-size:12px;color:var(--text-4);margin-top:10px">🔒 Your resume is stored securely. We never share it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-label reveal">How It Works</div>
+    <h2 class="section-title reveal">3 Simple Steps</h2>
+    <div class="hiw-grid">
+      <div class="hiw-card reveal"><div class="hiw-step">1</div><div class="hiw-title">Upload Your Resume</div><div class="hiw-sub">Drag and drop your PDF, DOCX, or TXT resume file into the checker.</div></div>
+      <div class="hiw-card reveal"><div class="hiw-step">2</div><div class="hiw-title">Instant AI Analysis</div><div class="hiw-sub">Our system scores your resume across 8 key dimensions that recruiters look for.</div></div>
+      <div class="hiw-card reveal"><div class="hiw-step">3</div><div class="hiw-title">Get Expert Feedback</div><div class="hiw-sub">Receive actionable improvement tips and optionally connect with an AshishTek expert.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-white">
+  <div class="container">
+    <div class="cta-strip reveal">
+      <h2>Want a Human Expert Review?</h2>
+      <p>Our career specialists will personally review your resume and provide detailed written feedback + a 30-min coaching call.</p>
+      <div class="btn-row">
+        <button class="btn btn-outline-white" onclick="openModal('bookModal')" style="cursor:pointer">📅 Book Free Consultation ↗</button>
+        <button class="btn" style="background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.4);cursor:pointer" onclick="openModal('callbackModal')">📞 Request Callback</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-main-grid">
+      <!-- Left Column -->
+      <div class="footer-brand-col">
+        <a href="index.html" class="footer-brand-header" title="AshishTek - Home">
+          <img src="images/logo.png" alt="AshishTek" class="footer-logo" onerror="this.style.display='none'">
+          <span class="footer-brand-name">Ashish<span class="r">Tek</span></span>
+        </a>
+        <p class="footer-tagline">Where Passion Meets Next-Gen Technologies. Empowering tech professionals across America.</p>
+        <a href="contact.html" class="footer-contact-btn">Contact Us &rarr;</a>
+        <div class="footer-everify-wrap">
+          <img src="images/E-Verify_logo.svg.webp" alt="E-Verify" class="footer-everify-logo">
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="footer-nav-col">
+        <div class="footer-links-grid">
+          <div>
+            <div class="footer-col-title">Home</div>
+            <ul class="footer-links-list">
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="resume.html">Careers</a></li>
+              <li><a href="contact.html">Refer &amp; Earn</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Other</div>
+            <ul class="footer-links-list">
+              <li><a href="about.html">Privacy Policy</a></li>
+              <li><a href="about.html">Terms and Conditions</a></li>
+              <li><a href="services.html">Partner Company</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Contact</div>
+            <ul class="footer-links-list">
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="contact.html#faq">FAQ's</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-address-block">
+          <div class="footer-address-title">Address</div>
+          <div class="footer-address-text">Florida, United States</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-copy">@2025, All Rights Reserved</div>
+      <a href="contact.html" class="footer-refer-btn">🎁 Refer &amp; Earn</a>
+    </div>
+  </div>
+  <div class="footer-stripe"></div>
+</footer>
+
+<div id="cursorDot"></div>
+<div id="toast">✅ Done!</div>
+
+<!-- CENTERED AD POPUP -->
+<div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
+<div class="center-nudge" id="autoNudge">
+  <div class="center-nudge-header">
+    <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
+    <div class="center-nudge-eyebrow">🔥 Limited Free Slots</div>
+    <div class="center-nudge-title">Get Your Resume Professionally Reviewed</div>
+    <div class="center-nudge-sub">Florida-based experts · 200+ resumes improved</div>
+  </div>
+  <div class="center-nudge-body">
+    <div class="center-nudge-perks">
+      <div class="cnp-item"><div class="cnp-icon">📝</div>Detailed written feedback on every section</div>
+      <div class="cnp-item"><div class="cnp-icon">🎯</div>ATS optimization for top US tech companies</div>
+      <div class="cnp-item"><div class="cnp-icon">📞</div>30-min coaching call included — free</div>
+    </div>
+    <div class="center-nudge-btns">
+      <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Review</button>
+      <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Callback</button>
+    </div>
+    <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
+  </div>
+  <div class="center-nudge-footer">🔒 Free · Confidential · No spam</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  let resumeText = '';
+  let resumeFile = null;
+  let resumeFileData = null;
+
+  // EmailJS Constants - Replace these with your actual IDs
+  const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+  const EMAILJS_CALLBACK_TEMPLATE_ID = "YOUR_CALLBACK_TEMPLATE_ID";
+  const EMAILJS_BOOKING_TEMPLATE_ID = "YOUR_BOOKING_TEMPLATE_ID";
+  const EMAILJS_RESUME_TEMPLATE_ID = "YOUR_RESUME_TEMPLATE_ID";
+
+  // Loading screen
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loadingScreen');
+    setTimeout(() => { loader.classList.add('fade-out'); setTimeout(() => loader.style.display='none', 650); }, 1600);
+  });
+
+  // Cursor Follower Dot
+  const cdot = document.getElementById('cursorDot');
+  if (cdot) { let cx=window.innerWidth/2,cy=window.innerHeight/2,dx=cx,dy=cy; document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY}); document.addEventListener('mousedown',()=>cdot.classList.add('clicking')); document.addEventListener('mouseup',()=>cdot.classList.remove('clicking')); (function animateDot(){dx+=(cx-dx)*.14;dy+=(cy-dy)*.14;cdot.style.left=dx+'px';cdot.style.top=dy+'px';requestAnimationFrame(animateDot)})(); }
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('mobileNav').classList.add('open'); document.getElementById('mobileBackdrop').classList.add('open'); });
+  document.getElementById('mobileClose').addEventListener('click', () => { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); });
+  function closeMobile() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileBackdrop').classList.remove('open'); }
+
+  // Scroll reveal
+  const ro = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('up');ro.unobserve(e.target);} }); }, {threshold:0.08});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ro.observe(el));
+
+  // Modals
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) closeModal(m.id); }));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); });
+
+  // ── EMAILJS FORM HANDLERS ──
+  async function handleCallbackSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('cb_submitBtn');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_CALLBACK_TEMPLATE_ID, '#callbackForm');
+      closeModal('callbackModal');
+      showToast('✅ Callback request sent successfully!');
+      document.getElementById('callbackForm').reset();
+    } catch (error) {
+      console.error('EmailJS Callback Error:', error);
+      showToast('❌ Failed to send request. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+
+  async function handleBookSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('bm_submitBtn');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Booking...';
+
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_BOOKING_TEMPLATE_ID, '#bookForm');
+      closeModal('bookModal');
+      showToast('✅ Session booked successfully!');
+      document.getElementById('bookForm').reset();
+    } catch (error) {
+      console.error('EmailJS Booking Error:', error);
+      showToast('❌ Booking failed. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+    setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; },4000);
+  }
+
+  // ── File Upload ──
+  function handleFileSelect(e) { setFile(e.target.files[0]); }
+  function handleDrag(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
+  function handleDragLeave() { document.getElementById('uploadZone').classList.remove('dragover'); }
+  function handleDrop(e) {
+    e.preventDefault(); document.getElementById('uploadZone').classList.remove('dragover');
+    if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+  }
+  function setFile(file) {
+    if (!file) return;
+    resumeFile = file;
+    document.getElementById('selectedFileName').textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
+    document.getElementById('fileSelected').classList.add('show');
+    // Read as base64 for upload
+    const reader = new FileReader();
+    reader.onload = ev => { resumeFileData = ev.target.result.split(',')[1]; };
+    reader.readAsDataURL(file);
+    // Extract text
+    extractText(file);
+  }
+
+  async function extractText(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'txt') {
+      resumeText = await file.text();
+    } else if (ext === 'pdf') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const ab = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data: ab}).promise;
+      let text = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map(s => s.str).join(' ') + '\n';
+      }
+      resumeText = text;
+    } else {
+      // DOCX/DOC: read as text (basic extraction)
+      resumeText = await file.text();
+    }
+  }
+
+  // ── Resume Analysis Engine ──
+  async function handleResumeSubmit(e) {
+    e.preventDefault();
+
+    const form = document.getElementById('resumeForm');
+    const btn = document.getElementById('analyzeBtn');
+    const file = document.getElementById('resumeFileInput').files[0];
+    const name = document.getElementById('rName').value.trim();
+    const email = document.getElementById('rEmail').value.trim();
+
+    if (!file) { showToast('⚠️ Please upload your resume first!'); return; }
+    if (!name || !email) { showToast('⚠️ Please fill in your name and email.'); return; }
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('⚠️ Please upload a file smaller than 10 MB.');
+      return;
+    }
+
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span> Sending & Analyzing...';
+
+    try {
+      // EmailJS Form File Attachment: the file input must have a name
+      // matching the attachment parameter configured in the EmailJS template.
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_RESUME_TEMPLATE_ID, form);
+
+      const result = scoreResume(resumeText);
+      displayResults(result);
+      showToast('✅ Resume submitted successfully!');
+      btn.innerHTML = '✅ Re-Analyze Resume';
+    } catch (error) {
+      console.error('EmailJS Resume Error:', error);
+      showToast('❌ Resume could not be sent. Please try again.');
+      btn.innerHTML = originalText;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // Kept for compatibility with any existing calls.
+  function analyzeResume() {
+    document.getElementById('resumeForm').requestSubmit();
+  }
+
+  function scoreResume(text) {
+    const t = text.toLowerCase();
+    const scores = {};
+
+    // 1. Contact Info (15pts)
+    let contact = 0;
+    if (/\b[\w.+-]+@[\w-]+\.[a-z]{2,}\b/.test(t)) contact += 5;
+    if (/(\+1|1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(t)) contact += 5;
+    if (/linkedin\.com|github\.com|portfolio/.test(t)) contact += 5;
+    scores.contact = { label: 'Contact Information', score: contact, max: 15, icon: '📧' };
+
+    // 2. Professional Summary (10pts)
+    let summary = 0;
+    if (/summary|objective|profile|about me/.test(t)) summary += 6;
+    if (t.split(/\s+/).length > 50) summary += 4;
+    scores.summary = { label: 'Professional Summary', score: summary, max: 10, icon: '📝' };
+
+    // 3. Work Experience (25pts)
+    let exp = 0;
+    if (/experience|employment|work history|professional background/.test(t)) exp += 8;
+    const actionVerbs = ['led','managed','developed','created','improved','designed','built','launched','achieved','increased','reduced','delivered','collaborated','analyzed','implemented','coordinated','executed','streamlined','optimized','facilitated'];
+    const verbCount = actionVerbs.filter(v => t.includes(v)).length;
+    exp += Math.min(verbCount * 2, 10);
+    if (/\d{4}\s*[-–]\s*(\d{4}|present|current)/.test(t)) exp += 4;
+    if (/\d+\s*(%|percent|million|billion|k\b|\$)/.test(t)) exp += 3;
+    scores.experience = { label: 'Work Experience', score: Math.min(exp, 25), max: 25, icon: '💼' };
+
+    // 4. Skills (15pts)
+    let skills = 0;
+    if (/skills|technologies|tools|competencies/.test(t)) skills += 5;
+    const techKeywords = ['python','java','javascript','sql','aws','azure','react','node','docker','kubernetes','git','agile','scrum','tableau','power bi','excel','machine learning','data analysis','api','linux','devops','cloud','typescript','go','scala','spark','tensorflow'];
+    const techCount = techKeywords.filter(k => t.includes(k)).length;
+    skills += Math.min(techCount * 2, 10);
+    scores.skills = { label: 'Technical Skills', score: Math.min(skills, 15), max: 15, icon: '⚙️' };
+
+    // 5. Education (10pts)
+    let edu = 0;
+    if (/education|degree|university|college|bachelor|master|phd|certification|certified/.test(t)) edu += 7;
+    if (/gpa|honors|cum laude|dean/.test(t)) edu += 3;
+    scores.education = { label: 'Education', score: Math.min(edu, 10), icon: '🎓', max: 10 };
+
+    // 6. ATS Compatibility (15pts)
+    let ats = 0;
+    const sections = ['experience','education','skills','summary','objective','certifications','projects','awards'];
+    const sectionCount = sections.filter(s => t.includes(s)).length;
+    ats += Math.min(sectionCount * 2, 10);
+    if (!/table|column|text box|image/.test(t)) ats += 3; // Assume simple format
+    if (text.length > 400 && text.length < 8000) ats += 2;
+    scores.ats = { label: 'ATS Compatibility', score: Math.min(ats, 15), max: 15, icon: '🤖' };
+
+    // 7. Quantified Achievements (10pts)
+    let quant = 0;
+    const numMatches = (t.match(/\d+/g) || []).length;
+    quant += Math.min(numMatches * 1.5, 7);
+    if (/increased|decreased|reduced|improved|grew|saved/.test(t)) quant += 3;
+    scores.achievements = { label: 'Quantified Results', score: Math.min(Math.round(quant), 10), max: 10, icon: '📊' };
+
+    // Total
+    const total = Object.values(scores).reduce((s, v) => s + v.score, 0);
+
+    // Tips
+    const tips = [];
+    if (scores.contact.score < 12) tips.push('Add your LinkedIn profile and GitHub/portfolio link to stand out.');
+    if (scores.summary.score < 7) tips.push('Add a 3–4 sentence professional summary highlighting your key strengths.');
+    if (verbCount < 5) tips.push('Start bullet points with strong action verbs (Led, Built, Increased, Delivered...).');
+    if (techCount < 5) tips.push('List more specific technical skills and tools relevant to your target role.');
+    if (scores.achievements.score < 6) tips.push('Add numbers to your achievements — e.g., "Increased sales by 30%" or "Reduced load time by 2s".');
+    if (scores.ats.score < 10) tips.push('Use standard section headings (Experience, Skills, Education) for ATS systems to parse your resume correctly.');
+    if (text.length < 500) tips.push('Your resume seems short — expand on your experience with more detail and bullet points.');
+    if (tips.length === 0) tips.push('Great resume! Consider tailoring keywords for each specific job description you apply to.');
+
+    return { scores, total, tips };
+  }
+
+  function displayResults({ scores, total, tips }) {
+    document.getElementById('placeholderCard').style.display = 'none';
+    const card = document.getElementById('scoreCard');
+    card.classList.add('show');
+
+    // Animate score circle
+    const arc = document.getElementById('scoreArc');
+    const circumference = 264;
+    setTimeout(() => {
+      arc.style.strokeDashoffset = circumference - (total / 100) * circumference;
+      const color = total >= 80 ? '#16a34a' : total >= 60 ? '#2563eb' : total >= 40 ? '#d97706' : '#dc2626';
+      arc.style.stroke = color;
+    }, 100);
+
+    // Animate number
+    const numEl = document.getElementById('scoreNum');
+    let count = 0;
+    const interval = setInterval(() => {
+      count += 2;
+      numEl.textContent = Math.min(count, total);
+      if (count >= total) clearInterval(interval);
+    }, 30);
+
+    // Grade
+    const gradeEl = document.getElementById('scoreGrade');
+    const descEl = document.getElementById('scoreDesc');
+    if (total >= 80) { gradeEl.textContent = '🏆 Excellent!'; gradeEl.className = 'score-grade excellent'; descEl.textContent = 'Your resume is well-optimized. Minor tweaks could make it perfect.'; }
+    else if (total >= 60) { gradeEl.textContent = '👍 Good'; gradeEl.className = 'score-grade good'; descEl.textContent = 'Solid resume with room for improvement. Follow the tips below.'; }
+    else if (total >= 40) { gradeEl.textContent = '⚠️ Fair'; gradeEl.className = 'score-grade fair'; descEl.textContent = 'Your resume needs work. Use the tips below to boost your score.'; }
+    else { gradeEl.textContent = '🔴 Needs Work'; gradeEl.className = 'score-grade poor'; descEl.textContent = 'Significant improvements needed. Consider booking a free expert review.'; }
+
+    // Score items
+    const itemsEl = document.getElementById('scoreItems');
+    itemsEl.innerHTML = Object.values(scores).map(({ label, score, max, icon }) => {
+      const pct = Math.round((score / max) * 100);
+      const barColor = pct >= 70 ? '#16a34a' : pct >= 45 ? '#2563eb' : '#dc2626';
+      return `<div class="score-item">
+        <div class="si-icon">${icon}</div>
+        <div class="si-info">
+          <div class="si-title">${label}</div>
+          <div class="si-bar-wrap"><div class="si-bar" style="width:0%;background:${barColor}" data-width="${pct}%"></div></div>
+        </div>
+        <div class="si-score">${score}/${max}</div>
+      </div>`;
+    }).join('');
+
+    // Animate bars
+    setTimeout(() => {
+      document.querySelectorAll('.si-bar').forEach(bar => { bar.style.width = bar.dataset.width; });
+    }, 200);
+
+    // Tips
+    document.getElementById('tipsList').innerHTML = tips.map(tip =>
+      `<div class="tip-item"><span class="tip-arrow">→</span>${tip}</div>`
+    ).join('');
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Submit Resume
+  async function submitToSheets() {
+    const btn = document.getElementById('submitResumeBtn');
+    btn.textContent = '⏳ Saving...'; btn.disabled = true;
+
+    setTimeout(() => {
+      showToast('✅ Resume submitted! Our team will review and contact you soon.');
+      btn.textContent = '✅ Submitted! Expert Will Contact You';
+      btn.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
+    }, 600);
+  }
+
+  // ── Centered Ad Popup ──
+  let nudgeRepeatTimer = null;
+  function showNudge() {
+    const fill = document.getElementById('nudgeTimerFill');
+    if (fill) { fill.style.animation='none'; fill.offsetHeight; fill.style.animation=''; }
+    document.getElementById('autoNudge').classList.add('show');
+    document.getElementById('nudgeBackdrop').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function dismissNudge() {
+    document.getElementById('autoNudge').classList.remove('show');
+    document.getElementById('nudgeBackdrop').classList.remove('show');
+    document.body.style.overflow = '';
+    clearTimeout(nudgeRepeatTimer);
+    nudgeRepeatTimer = setTimeout(showNudge, 120000);
+  }
+  setTimeout(showNudge, 8000); // Show a bit later on resume page
+</script>
+</body>
+</html>
