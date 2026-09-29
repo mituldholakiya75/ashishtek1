@@ -245,16 +245,16 @@
         </div>
 
         <!-- Contact info + submit -->
-        <div class="resume-meta" style="margin-top:24px">
+        <form id="resumeContactForm" class="resume-meta" style="margin-top:24px" onsubmit="handleResumeSubmit(event)">
           <h3>📬 Your Contact Info</h3>
           <p style="font-size:13px;color:var(--text-3);margin-bottom:20px;line-height:1.6">We'll save your result and may reach out with personalized career tips.</p>
           <div class="form-row">
-            <div class="form-group"><label>Your Name <span style="color:var(--red)">*</span></label><input type="text" id="rName" class="form-control" placeholder="John Doe" required></div>
-            <div class="form-group"><label>Email <span style="color:var(--red)">*</span></label><input type="email" id="rEmail" class="form-control" placeholder="john@email.com" required></div>
+            <div class="form-group"><label for="rName">Your Name <span style="color:var(--red)">*</span></label><input type="text" id="rName" name="name" class="form-control" placeholder="John Doe" required></div>
+            <div class="form-group"><label for="rEmail">Email <span style="color:var(--red)">*</span></label><input type="email" id="rEmail" name="email" class="form-control" placeholder="john@email.com" required></div>
           </div>
-          <div class="form-group"><label>Phone (optional)</label><input type="tel" id="rPhone" class="form-control" placeholder="+1 (555) 000-0000"></div>
-          <button class="analyze-btn" id="analyzeBtn" onclick="analyzeResume()">🔍 Analyze My Resume</button>
-        </div>
+          <div class="form-group"><label for="rPhone">Phone (optional)</label><input type="tel" id="rPhone" name="phone" class="form-control" placeholder="+1 (555) 000-0000"></div>
+          <button type="submit" class="analyze-btn" id="analyzeBtn">🔍 Analyze My Resume</button>
+        </form>
       </div>
 
       <!-- Right: Score Results -->
@@ -573,23 +573,65 @@
     }
   }
 
-  // ── Resume Analysis Engine ──
-  function analyzeResume() {
+  // ── Resume Contact Form + EmailJS + Analysis ──
+  function handleResumeSubmit(e) {
+    e.preventDefault();
+
     const name = document.getElementById('rName').value.trim();
     const email = document.getElementById('rEmail').value.trim();
-    if (!resumeFile) { showToast('⚠️ Please upload your resume first!'); return; }
-    if (!name || !email) { showToast('⚠️ Please fill in your name and email.'); return; }
+    const phone = document.getElementById('rPhone').value.trim();
+
+    if (!resumeFile) {
+      showToast('⚠️ Please upload your resume first!');
+      return;
+    }
+
+    if (!name || !email) {
+      showToast('⚠️ Please fill in your name and email.');
+      return;
+    }
 
     const btn = document.getElementById('analyzeBtn');
     btn.disabled = true;
-    btn.innerHTML = '<span class="btn-spinner"></span> Analyzing...';
+    btn.innerHTML = '<span class="btn-spinner"></span> Sending &amp; Analyzing...';
 
-    setTimeout(() => {
-      const result = scoreResume(resumeText);
-      displayResults(result);
-      btn.disabled = false;
-      btn.innerHTML = '✅ Re-Analyze Resume';
-    }, 2000);
+    // Use the same EmailJS service/template configuration as the modal forms.
+    const nameParts = name.split(/\s+/);
+    const firstName = nameParts.shift() || name;
+    const lastName = nameParts.join(' ') || '-';
+
+    const params = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone || '-',
+      service: 'Resume Score Checker',
+      date: '-',
+      bestTime: '-'
+    };
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CALLBACK_TEMPLATE_ID, params)
+      .then(function() {
+        showToast('✅ Details submitted! Analyzing your resume...');
+
+        setTimeout(() => {
+          const result = scoreResume(resumeText);
+          displayResults(result);
+          btn.disabled = false;
+          btn.innerHTML = '🔄 Re-Analyze Resume';
+        }, 2000);
+      })
+      .catch(function(err) {
+        console.error('EmailJS Resume Form Error:', err);
+        btn.disabled = false;
+        btn.innerHTML = '🔍 Analyze My Resume';
+        alert('Oops! Something went wrong sending your details. Please try again.');
+      });
+  }
+
+  // Kept as a compatibility wrapper in case analyzeResume() is called elsewhere.
+  function analyzeResume() {
+    document.getElementById('resumeContactForm').requestSubmit();
   }
 
   function scoreResume(text) {
