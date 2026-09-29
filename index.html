@@ -289,10 +289,16 @@
       .journey-wrap { grid-template-columns: 1fr; gap: 48px; }
     }
   </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init({ publicKey: "9FPzKF6Pfh1kOge_Q" });
+    })();
+  </script>
 </head>
 <body>
 
-<!-- ══ REQUEST CALLBACK MODAL ══ -->
+<!-- ══ REQUEST CALLBACK MODAL ══
 <div class="modal-overlay" id="callbackModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('callbackModal')" aria-label="Close">&times;</button>
@@ -318,14 +324,14 @@
   </div>
 </div>
 
-<!-- ══ BOOK SESSION MODAL ══ -->
+══ BOOK SESSION MODAL ══ -->
 <div class="modal-overlay" id="bookModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('bookModal')" aria-label="Close">&times;</button>
     <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
     <div class="modal-title">Book Your Free Session</div>
     <p class="modal-sub">Schedule a free 30-min consultation with an AshishTek career specialist. No commitment required.</p>
-    <form onsubmit="handleModal(event,'bookModal')">
+    <form onsubmit="submitBookForm(event)">
       <div class="form-row">
         <div class="form-group"><label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_firstName" class="form-control" placeholder="John" required></div>
         <div class="form-group"><label for="bm_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="bm_lastName" class="form-control" placeholder="Doe" required></div>
@@ -341,8 +347,34 @@
         </select>
       </div>
       <div class="form-group"><label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label><input type="date" id="bm_date" class="form-control" required></div>
-      <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;&#8594;</button>
+      <button type="submit" id="bmSubmitBtn" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;&#8594;</button>
       <p style="text-align:center;font-size:12px;color:var(--text-4);margin-top:12px">&#128274; Your info is confidential. No spam, ever.</p>
+    </form>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="callbackModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('callbackModal')">&times;</button>
+    <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
+    <div class="modal-title">Request a Callback</div>
+    <p class="modal-sub">Leave your number and we'll call you back within 2 hours during business hours.</p>
+    <form onsubmit="submitCallbackForm(event)">
+      <div class="form-row">
+        <div class="form-group"><label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_firstName" class="form-control" placeholder="John" required></div>
+        <div class="form-group"><label for="cb_lastName">Last Name <span style="color:var(--red)">*</span></label><input type="text" id="cb_lastName" class="form-control" placeholder="Doe" required></div>
+      </div>
+      <div class="form-group"><label for="cb_phone">Phone Number <span style="color:var(--red)">*</span></label><input type="tel" id="cb_phone" class="form-control" placeholder="+1 (555) 000-0000" required></div>
+      <div class="form-group"><label for="cb_time">Best Time to Call <span style="color:var(--red)">*</span></label>
+        <select id="cb_time" class="form-control form-control-select" required>
+          <option value="">Select best time...</option>
+          <option value="Morning">Morning (9AM–12PM CST)</option>
+          <option value="Afternoon">Afternoon (12PM–4PM CST)</option>
+          <option value="Evening">Evening (4PM–6PM CST)</option>
+        </select>
+      </div>
+      <button type="submit" id="cbSubmitBtn" class="btn btn-red btn-full" style="margin-top:6px">Request Callback &nbsp;↗</button>
     </form>
   </div>
 </div>
@@ -1049,6 +1081,75 @@
     showToast('✅ Request submitted! We\'ll be in touch soon.');
   }
 
+    // ── 2. REQUEST CALLBACK MODAL SUBMISSION ──
+  function submitCallbackForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('cbSubmitBtn');
+    btn.innerHTML = '⏳ Sending...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('cb_firstName').value,
+      lastName: document.getElementById('cb_lastName').value,
+      email: "-",
+      phone: document.getElementById('cb_phone').value,
+      service: "-",
+      date: "-",
+      bestTime: document.getElementById('cb_time').value
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        closeModal('callbackModal');
+        showToast('✅ Callback request submitted! We will call you soon.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong sending your request. Please try again.");
+      });
+  }
+
+  // ── 3. BOOK FREE SESSION MODAL SUBMISSION ──
+  function submitBookForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('bmSubmitBtn');
+    btn.innerHTML = '⏳ Booking...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('bm_firstName').value,
+      lastName: document.getElementById('bm_lastName').value,
+      email: document.getElementById('bm_email').value,
+      phone: "-",
+      service: document.getElementById('bm_service').value,
+      date: document.getElementById('bm_date').value,
+      bestTime: "-"
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        closeModal('bookModal');
+        showToast('✅ Consultation slot booked! We will contact you shortly.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong booking your slot. Please try again.");
+      });
+  }
+
+
   function showToast(msg) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
@@ -1056,10 +1157,79 @@
     setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(-50%) translateY(20px)'; }, 4000);
   }
 
+    // ── 2. REQUEST CALLBACK MODAL SUBMISSION ──
+  function submitCallbackForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('cbSubmitBtn');
+    btn.innerHTML = '⏳ Sending...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('cb_firstName').value,
+      lastName: document.getElementById('cb_lastName').value,
+      email: "-",
+      phone: document.getElementById('cb_phone').value,
+      service: "-",
+      date: "-",
+      bestTime: document.getElementById('cb_time').value
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        closeModal('callbackModal');
+        showToast('✅ Callback request submitted! We will call you soon.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Request Callback &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong sending your request. Please try again.");
+      });
+  }
+
+  // ── 3. BOOK FREE SESSION MODAL SUBMISSION ──
+  function submitBookForm(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('bmSubmitBtn');
+    btn.innerHTML = '⏳ Booking...';
+    btn.disabled = true;
+
+    let params = {
+      firstName: document.getElementById('bm_firstName').value,
+      lastName: document.getElementById('bm_lastName').value,
+      email: document.getElementById('bm_email').value,
+      phone: "-",
+      service: document.getElementById('bm_service').value,
+      date: document.getElementById('bm_date').value,
+      bestTime: "-"
+    };
+
+    emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+      .then(function(res) {
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        closeModal('bookModal');
+        showToast('✅ Consultation slot booked! We will contact you shortly.');
+        e.target.reset();
+      })
+      .catch(function(err) {
+        console.error("EmailJS Error:", err);
+        btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+        btn.disabled = false;
+        alert("Oops! Something went wrong booking your slot. Please try again.");
+      });
+  }
+
+
   // ── Centered Ad Popup ──
   let nudgeRepeatTimer = null;
   function showNudge() {
-    const n = document.getElementById('autoNudge');
+    const n = document.getElementById('autoNudge');Q
     const b = document.getElementById('nudgeBackdrop');
     const fill = document.getElementById('nudgeTimerFill');
     if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = ''; }
@@ -1076,4 +1246,4 @@
   setTimeout(showNudge, 30000);
 </script>
 </body>
-</html>
+</html>  

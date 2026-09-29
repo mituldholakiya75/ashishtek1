@@ -129,7 +129,7 @@
       <div class="tag tag-red" style="margin-bottom:14px"><span class="tag-dot"></span> Quick Request</div>
       <div class="modal-title">Request a Callback</div>
       <p class="modal-sub">Leave your number and we'll call you back within 2 hours.</p>
-      <form onsubmit="handleModal(event,'callbackModal')">
+      <form onsubmit="submitCallbackForm(event)">
         <div class="form-row">
           <div class="form-group">
             <label for="cb_firstName">First Name <span style="color:var(--red)">*</span></label>
@@ -164,7 +164,7 @@
       <div class="tag" style="margin-bottom:14px"><span class="tag-dot"></span> Free Consultation</div>
       <div class="modal-title">Book Your Free Session</div>
       <p class="modal-sub">Schedule a free 30-min consultation. No commitment required.</p>
-      <form onsubmit="handleModal(event,'bookModal')">
+      <form onsubmit="submitBookForm(event)">
         <div class="form-row">
           <div class="form-group">
             <label for="bm_firstName">First Name <span style="color:var(--red)">*</span></label>
@@ -193,7 +193,7 @@
           <label for="bm_date">Preferred Date <span style="color:var(--red)">*</span></label>
           <input type="date" id="bm_date" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
+        <button type="submit" id="bmSubmitBtn" class="btn btn-blue btn-full" style="margin-top:6px">Book My Free Slot &nbsp;↗</button>
       </form>
     </div>
   </div>
@@ -540,7 +540,10 @@
     <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
+    emailjs.init({ publicKey: "9FPzKF6Pfh1kOge_Q" });
+
     // Loading Screen
     window.addEventListener('load', () => {
       const loader = document.getElementById('loadingScreen');
@@ -627,10 +630,70 @@
       }
     });
 
-    function handleModal(e, id) {
+    function submitCallbackForm(e) {
       e.preventDefault();
-      closeModal(id);
-      showToast('✅ Request submitted! We\'ll be in touch soon.');
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = '⏳ Sending...';
+      btn.disabled = true;
+
+      const params = {
+        firstName: document.getElementById('cb_firstName').value,
+        lastName: document.getElementById('cb_lastName').value,
+        email: "-",
+        phone: document.getElementById('cb_phone').value,
+        service: "-",
+        date: "-",
+        bestTime: document.getElementById('cb_time').value
+      };
+
+      emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+        .then(function() {
+          btn.innerHTML = 'Request Callback &nbsp;↗';
+          btn.disabled = false;
+          closeModal('callbackModal');
+          showToast('✅ Callback request submitted! We will call you soon.');
+          e.target.reset();
+        })
+        .catch(function(err) {
+          console.error("EmailJS Error:", err);
+          btn.innerHTML = 'Request Callback &nbsp;↗';
+          btn.disabled = false;
+          alert("Oops! Something went wrong sending your request. Please try again.");
+        });
+    }
+
+    function submitBookForm(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('bmSubmitBtn');
+      btn.innerHTML = '⏳ Booking...';
+      btn.disabled = true;
+
+      const params = {
+        firstName: document.getElementById('bm_firstName').value,
+        lastName: document.getElementById('bm_lastName').value,
+        email: document.getElementById('bm_email').value,
+        phone: "-",
+        service: document.getElementById('bm_service').value,
+        date: document.getElementById('bm_date').value,
+        bestTime: "-"
+      };
+
+      emailjs.send("service_w8xypg7", "template_57y8nzg", params)
+        .then(function() {
+          btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+          btn.disabled = false;
+          closeModal('bookModal');
+          showToast('✅ Consultation slot booked! We will contact you shortly.');
+          e.target.reset();
+        })
+        .catch(function(err) {
+          console.error("EmailJS Error:", err);
+          btn.innerHTML = 'Book My Free Slot &nbsp;↗';
+          btn.disabled = false;
+          alert("Oops! Something went wrong booking your slot. Please try again.");
+        });
     }
 
     function showToast(msg) {
