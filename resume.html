@@ -473,7 +473,8 @@
       phone: document.getElementById('cb_phone').value,
       service: "-",
       date: "-",
-      bestTime: document.getElementById('cb_time').value
+      bestTime: document.getElementById('cb_time').value,
+      type: "Callback Request"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)
@@ -506,7 +507,8 @@
       phone: "-",
       service: document.getElementById('bm_service').value,
       date: document.getElementById('bm_date').value,
-      bestTime: "-"
+      bestTime: "-",
+      type: "Free Consultation Booking"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)

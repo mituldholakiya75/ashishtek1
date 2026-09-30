@@ -680,7 +680,8 @@
       phone: document.getElementById('cb_phone').value,
       service: "-",
       date: "-",
-      bestTime: document.getElementById('cb_time').value
+      bestTime: document.getElementById('cb_time').value,
+      type: "Request Callback"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)
@@ -714,7 +715,8 @@
       phone: "-",
       service: document.getElementById('bm_service').value,
       date: document.getElementById('bm_date').value,
-      bestTime: "-"
+      bestTime: "-",
+      type: "Book Free Session"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)

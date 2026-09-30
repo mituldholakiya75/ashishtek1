@@ -964,29 +964,30 @@ html, body { max-width: 100%; overflow-x: hidden; }
   </div>
 </div>
 
-<div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
-<div class="center-nudge" id="autoNudge">
-  <div class="center-nudge-header">
-    <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
-    <div class="center-nudge-eyebrow">🔥 Limited Free Slots Available</div>
-    <div class="center-nudge-title">Launch Your Tech Career with AshishTek</div>
-    <div class="center-nudge-sub">Florida-based · 200+ professionals placed · 95% success rate</div>
-  </div>
-  <div class="center-nudge-body">
-    <div class="center-nudge-perks">
-      <div class="cnp-item"><div class="cnp-icon">📅</div>Free 30-min career consultation — no strings attached</div>
-      <div class="cnp-item"><div class="cnp-icon">🎯</div>Personalized roadmap to your target tech role</div>
-      <div class="cnp-item"><div class="cnp-icon">🤝</div>Access to 200+ employer partners across the US</div>
-      <div class="cnp-item"><div class="cnp-icon">📞</div>Get a callback from a specialist within 2 hours</div>
+<!-- CENTERED AD POPUP -->
+  <div class="nudge-backdrop" id="nudgeBackdrop" onclick="dismissNudge()"></div>
+  <div class="center-nudge" id="autoNudge">
+    <div class="center-nudge-header">
+      <button class="center-nudge-close" onclick="dismissNudge()" aria-label="Close">✕</button>
+      <div class="center-nudge-eyebrow">🔥 Limited Free Slots Available</div>
+      <div class="center-nudge-title">Launch Your Tech Career with AshishTek</div>
+      <div class="center-nudge-sub">Florida-based · 200+ professionals placed · 95% success rate</div>
     </div>
-    <div class="center-nudge-btns">
-      <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Consultation</button>
-      <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Request Callback</button>
+    <div class="center-nudge-body">
+      <div class="center-nudge-perks">
+        <div class="cnp-item"><div class="cnp-icon">📅</div>Free 30-min career consultation — no strings attached</div>
+        <div class="cnp-item"><div class="cnp-icon">🎯</div>Personalized roadmap to your target tech role</div>
+        <div class="cnp-item"><div class="cnp-icon">🤝</div>Access to 200+ employer partners across the US</div>
+        <div class="cnp-item"><div class="cnp-icon">📞</div>Get a callback from a specialist within 2 hours</div>
+      </div>
+      <div class="center-nudge-btns">
+        <button class="cnb-primary" onclick="dismissNudge();openModal('bookModal')">📅 Book Free Consultation</button>
+        <button class="cnb-secondary" onclick="dismissNudge();openModal('callbackModal')">📞 Request Callback</button>
+      </div>
+      <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
     </div>
-    <div class="center-nudge-timer"><div class="center-nudge-timer-fill" id="nudgeTimerFill"></div></div>
+    <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
   </div>
-  <div class="center-nudge-footer">🔒 Confidential · No spam · Cancel anytime</div>
-</div>
 
 <script>
   // ── Loading screen + Page Entry Animations ──
@@ -1298,7 +1299,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
       phone: document.getElementById('cb_phone').value,
       service: "-",
       date: "-",
-      bestTime: document.getElementById('cb_time').value
+      bestTime: document.getElementById('cb_time').value,
+      type: "Request Callback"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)
@@ -1332,7 +1334,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
       phone: "-",
       service: document.getElementById('bm_service').value,
       date: document.getElementById('bm_date').value,
-      bestTime: "-"
+      bestTime: "-",
+      type: "Book Free Session"
     };
 
     emailjs.send("service_w8xypg7", "template_57y8nzg", params)
@@ -1354,22 +1357,33 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
   // ── Centered Ad Popup ──
   let nudgeRepeatTimer = null;
-  function showNudge() {
-    const n = document.getElementById('autoNudge');Q
-    const b = document.getElementById('nudgeBackdrop');
-    const fill = document.getElementById('nudgeTimerFill');
-    if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = ''; }
-    n.classList.add('show'); b.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-  function dismissNudge() {
-    document.getElementById('autoNudge').classList.remove('show');
-    document.getElementById('nudgeBackdrop').classList.remove('show');
-    document.body.style.overflow = '';
-    clearTimeout(nudgeRepeatTimer);
-    nudgeRepeatTimer = setTimeout(showNudge, 120000);
-  }
-  setTimeout(showNudge, 30000);
+    function showNudge() {
+      const fill = document.getElementById('nudgeTimerFill');
+      const autoNudge = document.getElementById('autoNudge');
+      const nudgeBackdrop = document.getElementById('nudgeBackdrop');
+      
+      if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = ''; }
+      if (autoNudge && nudgeBackdrop) {
+        autoNudge.classList.add('show');
+        nudgeBackdrop.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function dismissNudge() {
+      const autoNudge = document.getElementById('autoNudge');
+      const nudgeBackdrop = document.getElementById('nudgeBackdrop');
+      
+      if (autoNudge && nudgeBackdrop) {
+        autoNudge.classList.remove('show');
+        nudgeBackdrop.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+      clearTimeout(nudgeRepeatTimer);
+      nudgeRepeatTimer = setTimeout(showNudge, 120000);
+    }
+
+    setTimeout(showNudge, 30000);
 </script>
 </body>
 </html>  
